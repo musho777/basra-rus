@@ -1,0 +1,16 @@
+.header>p {
+    color: #373737;
+    font-family: Montserrat;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 110%;
+}
+
+.ReviewWrapper {
+    margin: 40px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 50px;
+}
