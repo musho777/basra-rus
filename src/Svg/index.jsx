@@ -44,3 +44,10 @@ export const Stars = () => {
     </svg>
 
 }
+
+export const BackIcon = () => {
+    return <svg width="65" height="6" viewBox="0 0 65 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 3L5 5.88675V0.113249L0 3ZM65 2.5L4.5 2.5V3.5L65 3.5V2.5Z" fill="#373737" />
+    </svg>
+
+}

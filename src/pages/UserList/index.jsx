@@ -7,7 +7,7 @@ import { PopUp } from '../../components/PopUp'
 export const UserList = () => {
     const [data, setData] = useState(['', '', '', '', '', '', '', '', '', '',])
     const [button, setButton] = useState(['', '', '', '', ''])
-    const [openPopUp, setOpenPopUp] = useState(true)
+    const [openPopUp, setOpenPopUp] = useState(false)
 
     useEffect(() => {
         if (openPopUp) {
@@ -27,7 +27,6 @@ export const UserList = () => {
             {
                 data.map((elm, i) => {
                     return <TableItem
-                        img
                         title={[
                             'Имя',
                             'Телефон',

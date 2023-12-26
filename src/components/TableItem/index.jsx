@@ -1,6 +1,6 @@
 import './style.css'
-export const TableItem = ({ title, img }) => {
-    return <div className='TableItem' id={img ? 'TableItemIMgWrapper' : ''} >
+export const TableItem = ({ title, img, noborder }) => {
+    return <div className='TableItem' style={noborder && { border: 'none' }} id={img ? 'TableItemIMgWrapper' : ''} >
         {img && <div >
             <img className='TableItemImg' src={require('../../Assets/img/22.png')} />
         </div>}

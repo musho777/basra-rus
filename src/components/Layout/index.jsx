@@ -13,7 +13,7 @@ export const Layout = () => {
         if (curentPage == 'orderlist') {
             setActiveButton(0)
         }
-        else if (curentPage == 'userlist') {
+        else if (curentPage == 'userlist' || curentPage == 'UserScreen') {
             setActiveButton(1)
         }
         else if (curentPage == 'Product') {
