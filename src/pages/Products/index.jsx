@@ -1,15 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TableItem } from '../../components/TableItem'
 import { Button } from '../../components/button'
 import './style.css'
 import { Pagination } from '../../components/Pagination'
 import { Input } from '../../components/Input'
+import { useDispatch, useSelector } from 'react-redux'
+import { GetAllProducts } from '../../Services/action/action'
 export const Product = () => {
-    const [data, setData] = useState(['', '', '', '', '', '', '', '', '', '',])
-    const [button, setButton] = useState(['', '', '', '', ''])
+    const [data, setData] = useState([])
+    const [active, setActive] = useState(0)
+    const dispatch = useDispatch()
+    const { GetAllProductsReducer } = useSelector((st) => st)
+    useEffect(() => {
+        dispatch(GetAllProducts())
+    }, [])
+    useEffect(() => {
+        setData(GetAllProductsReducer?.data?.data)
+    }, [GetAllProductsReducer])
     return <div>
         <div className='header'>
-            <p>Товаров: 56</p>
+            <p>Товаров: {GetAllProductsReducer.data?.data?.length}</p>
             <div className='buttonWrapper'>
                 <div className='selectCategory'>
                     <p>
@@ -26,9 +36,9 @@ export const Product = () => {
         </div>
         <div className='TableWrapper'>
             {
-                data.map((elm, i) => {
+                data?.map((elm, i) => {
                     return <TableItem
-                        img
+                        img={elm.photos[0]}
                         title={[
                             'Наименование',
                             'Категория',
@@ -37,11 +47,19 @@ export const Product = () => {
                             'Цена со скидкой',
                             'Количество'
                         ]}
-
-                        key={i} />
+                        name={elm.name}
+                        phone={elm?.category?.name}
+                        date_of_birth={elm?.price}
+                        volume={elm.volume}
+                        order_count={elm?.product_count}
+                        email={elm.vendor_code}
+                        key={i}
+                    />
                 })
             }
         </div>
-        <Pagination length={4} activeButton={0} />
+        {GetAllProductsReducer?.data?.last_page > 1 && <Pagination changeActiveButton={(e) => setActive(e)} length={GetAllProductsReducer?.data?.last_page} activeButton={active} />}
+
+        {/* <Pagination length={4} activeButton={0} /> */}
     </div>
 }
