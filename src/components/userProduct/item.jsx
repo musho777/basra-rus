@@ -1,19 +1,19 @@
 import './style.css'
-export const Item = ({ last }) => {
+export const Item = ({ last, data, product }) => {
     return <div className="UserProductItem" id={last ? 'last' : ''}>
         <div className='ImgWrapperUserProduct'>
             <img className='UserProductImg' src={require('../../Assets/img/22.png')} />
             <div className='UserProductText'>
-                <p className='Artikle'>Артикул: 000101</p>
-                <p className='Krem'>КРЕМ Коллагеновый</p>
-                <p className='volume'>Объем: 50 мл</p>
+                <p className='Artikle'>Артикул: {data?.vendor_code}</p>
+                <p className='Krem'>{data?.name}</p>
+                <p className='volume'>Объем: {data?.volume} мл</p>
             </div>
         </div>
         <div className='UserProductColume'>
-            <div className='userProductAmount'>1 шт.</div>
+            <div className='userProductAmount'>{product?.product_count} шт.</div>
             <div className='UserProductPrice'>
-                <p className='userProductAmount'>678 ₽</p>
-                <p className='userProductSale'>999 ₽</p>
+                <p className='userProductAmount'>{product?.product_price_in_order_moment} ₽</p>
+                <p className='userProductSale'>{product.product_price} ₽</p>
             </div>
         </div>
     </div>

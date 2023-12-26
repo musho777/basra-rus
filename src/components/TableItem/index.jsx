@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react'
 import './style.css'
-export const TableItem = ({ title, img, noborder, data, name, phone, email, date_of_birth, order_count, created_at, volume, created_at1 }) => {
-    console.log(img)
+export const TableItem = ({ title, img, noborder, onClick = () => { }, name, phone, email, date_of_birth, order_count, created_at, volume, created_at1 }) => {
     const [date, setDate] = useState()
     useEffect(() => {
-        if ((created_at)) {
-
+        if (created_at) {
             setDate(new Date(created_at))
         }
-        if (created_at1) {
+        else if (created_at1) {
             setDate(new Date(created_at1))
-
         }
 
     }, [created_at])
-    return <div className='TableItem' style={noborder && { border: 'none' }} id={img ? 'TableItemIMgWrapper' : ''} >
+    return <div onClick={() => onClick()} className='TableItem' style={noborder && { border: 'none' }} id={img ? 'TableItemIMgWrapper' : ''} >
         {img && <div >
             <img className='TableItemImg' src={`https://basrabackend.justcode.am/uploads/${img.photo}`} />
         </div>}
@@ -28,7 +25,7 @@ export const TableItem = ({ title, img, noborder, data, name, phone, email, date
         </div>
         <div>
             <p className='Tablelabel'>{title[2]}</p>
-            {email ? <p className='TablelItem'>{email}</p>
+            {(email && created_at) ? <p className='TablelItem'>{email == 1 ? '' : email}</p>
                 : <p className='TablelItem'>{date?.getMonth() + 1}.{date?.getDate()}.{date?.getFullYear()}</p>
             }
         </div>

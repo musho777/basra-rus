@@ -21,3 +21,9 @@ export const StartGetOrders = () => {
         type: 'StartGetOrders'
     }
 }
+
+export const StartGetSinglUser = () => {
+    return {
+        type: "StartGetSinglUser"
+    }
+}

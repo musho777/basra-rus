@@ -23,7 +23,6 @@ export const UserList = () => {
 
     useEffect(() => {
         setData(GetUserReducer?.data.data)
-        console.log(GetUserReducer?.data?.current_page, 'GetUserReducer?.current_page')
     }, [GetUserReducer])
 
     useEffect(() => {
@@ -53,10 +52,14 @@ export const UserList = () => {
                                 'Дата регистрации',
                                 'Заказы'
                             ]}
+                            onClick={() => window.location = `/UserScreen/${elm.id}`}
                             data={elm}
                             name={elm?.name}
                             phone={elm?.phone}
-                            email={elm?.email}
+                            email={
+                                elm?.email ?
+                                    elm?.email : '1'
+                            }
                             date_of_birth={elm?.date_of_birth}
                             order_count={elm?.order_count}
                             created_at={elm?.created_at}

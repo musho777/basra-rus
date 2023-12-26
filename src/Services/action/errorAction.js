@@ -20,3 +20,9 @@ export const ErrorGetOrder = () => {
         type: 'ErrorGetOrder'
     }
 }
+
+export const ErrprGetSinglUser = () => {
+    return {
+        type: 'ErrprGetSinglUser'
+    }
+}

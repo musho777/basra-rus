@@ -1,10 +1,9 @@
-import { ErrorGetOrder, ErrorGetProduct, ErrorGetUser, ErrorLogin } from "./errorAction";
-import { StartGetOrders, StartGetProduct, StartGetUser, StartLogin } from "./startAction";
-import { SuccessGetOrders, SuccessGetProduct, SuccessGetUser, SuccessLogin } from "./successAction";
+import { ErrorGetOrder, ErrorGetProduct, ErrorGetUser, ErrorLogin, ErrprGetSinglUser } from "./errorAction";
+import { StartGetOrders, StartGetProduct, StartGetSinglUser, StartGetUser, StartLogin } from "./startAction";
+import { SuccessGetOrders, SuccessGetProduct, SuccessGetSinglUser, SuccessGetUser, SuccessLogin } from "./successAction";
 
 let api = 'https://basrabackend.justcode.am/api/admin'
 let token = localStorage.getItem('token')
-console.log(token)
 
 export const LoginAction = (data) => {
     var myHeaders = new Headers();
@@ -39,6 +38,7 @@ export const GetAllUsersAction = (page) => {
     var requestOptions = {
         method: 'GET',
         headers: myHeaders,
+
     };
     return (dispatch) => {
         dispatch(StartGetUser())
@@ -57,13 +57,14 @@ export const GetAllUsersAction = (page) => {
             });
     }
 }
-export const GetAllProducts = (page) => {
+export const GetAllProducts = (page, data) => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append('Authorization', `Bearer ${token}`);
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
+        body: JSON.stringify(data),
     };
     return (dispatch) => {
         dispatch(StartGetProduct())
@@ -71,7 +72,6 @@ export const GetAllProducts = (page) => {
             .then(response => response.json())
             .then(r => {
                 if (r.status) {
-                    console.log(r)
                     dispatch(SuccessGetProduct(r.data))
                     // dispatch(SuccessGetUser(r.data))
                 }
@@ -92,6 +92,7 @@ export const GetAllOrder = (data, page) => {
     var requestOptions = {
         method: 'POST',
         headers: myHeaders,
+        body: JSON.stringify(data),
     };
     return (dispatch) => {
         dispatch(StartGetOrders())
@@ -99,7 +100,6 @@ export const GetAllOrder = (data, page) => {
             .then(response => response.json())
             .then(r => {
                 if (r.status) {
-                    console.log(r)
                     dispatch(SuccessGetOrders(r.data))
                 }
                 else {
@@ -108,6 +108,33 @@ export const GetAllOrder = (data, page) => {
             })
             .catch((error) => {
                 dispatch(ErrorGetOrder())
+            });
+    }
+}
+
+export const GetSinglUser = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+    };
+    return (dispatch) => {
+        dispatch(StartGetSinglUser())
+        fetch(`${api}/single_page_user`, requestOptions)
+            .then(response => response.json())
+            .then(r => {
+                if (r.status) {
+                    dispatch(SuccessGetSinglUser(r))
+                }
+                else {
+                    dispatch(ErrprGetSinglUser())
+                }
+            })
+            .catch((error) => {
+                dispatch(ErrprGetSinglUser())
             });
     }
 }

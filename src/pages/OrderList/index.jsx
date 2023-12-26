@@ -15,7 +15,6 @@ export const OrderList = () => {
     }, [active])
 
     useEffect(() => {
-        console.log(GetAllOrdersReducer.data.data)
         setData(GetAllOrdersReducer?.data?.data)
     }, [GetAllOrdersReducer])
 

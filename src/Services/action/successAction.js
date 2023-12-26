@@ -25,3 +25,10 @@ export const SuccessGetOrders = (data) => {
         data
     }
 }
+
+export const SuccessGetSinglUser = (data) => {
+    return {
+        type: "SuccessGetSinglUser",
+        data
+    }
+}

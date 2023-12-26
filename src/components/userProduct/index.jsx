@@ -1,12 +1,12 @@
-import { TableItem } from "../TableItem"
 import { Item } from "./item"
 
-export const UserProduct = () => {
-    const data = ['', '', '']
+export const UserProduct = ({ data }) => {
     return <div className="UserProduct">
-
         {data.map((elm, i) => {
-            return <Item last={i + 1 == data.length} />
+            return <Item
+                data={elm.product}
+                product={elm}
+                key={i} last={i + 1 == data.length} />
         })
         }
     </div>
