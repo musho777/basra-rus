@@ -22,6 +22,7 @@ import { GetSinglPageChatRoomReducer } from './GetSinglPageChatRoomReducer'
 import { GetMyOrderReducer } from './GetMyOrderReducer'
 import { GetSinglOrderReducer } from './GetSinglOrderReducer'
 import { GetAllUSerReducer } from './GetAllUSerReducer'
+import { GetCommentsReducer } from "./GetCommentsReducer";
 
 export default combineReducers({
     Auth_reducer,
@@ -48,5 +49,6 @@ export default combineReducers({
     getMyOrder: GetMyOrderReducer,
     getSinglOrder: GetSinglOrderReducer,
     getAllUser: GetAllUSerReducer,
-    getSinglUSer: GetSinglUserReducer
+    getSinglUSer: GetSinglUserReducer,
+    GetCommentsReducer: GetCommentsReducer
 })

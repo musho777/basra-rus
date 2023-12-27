@@ -518,12 +518,10 @@ export const AddProduct = ({ open, setOpen }) => {
                                 </div>
                             </div>
                         ))}
-                        <Button component="label" variant="contained" className='createButon'>
+                        <Button component="label" className='createButon'>
                             картина
                             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                         </Button>
-                        {/* <div style={{ width: '80%' }} /> */}
-
                         <Button onClick={() => CreateProduct()} variant='contained' className='createButon'>Создает</Button>
                     </div>
                 }

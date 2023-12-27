@@ -11,7 +11,6 @@ export const UserScreen = () => {
     const dispatch = useDispatch()
     const { GetSinglUserReducer } = useSelector((st) => st)
     const [data, setData] = useState()
-    console.log(data)
     useEffect(() => {
         dispatch(GetSinglUser({ user_id: id }))
     }, [])
@@ -20,7 +19,6 @@ export const UserScreen = () => {
     useEffect(() => {
         setData(GetSinglUserReducer.data?.orders?.data)
     }, [GetSinglUserReducer])
-    console.log(data)
     return <div className='UserScreen'>
         <div className='UserScreenHeader'>
             <div onClick={() => window.history.go(-1)} className='TitleHeader'>

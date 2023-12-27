@@ -9,6 +9,7 @@ import { LoginScreen } from "../pages/LoginScreen"
 import { useSelector } from "react-redux"
 import { useEffect } from "react"
 import { Main } from "../pages/Main"
+import { AddProducts } from "../pages/AddProducts"
 
 export const Router = () => {
     let token = localStorage.getItem('token')
@@ -28,6 +29,8 @@ export const Router = () => {
                             <Route path="/Product" element={<Product />} />
                             <Route path="/UserScreen/:id" element={<UserScreen />} />
                             <Route path="/Main" element={<Main />} />
+                            <Route path="/AddProducts" element={<AddProducts />} />
+
                         </Route>
                         :
                         <Route path="/" element={<LoginScreen />} />
@@ -37,3 +40,4 @@ export const Router = () => {
     )
 }
 // Main
+// AddProducts

@@ -14,3 +14,11 @@
     justify-content: space-between;
     gap: 50px;
 }
+
+.ReviewsPageButtonWrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}

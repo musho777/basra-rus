@@ -13,7 +13,6 @@ export const AddSubCategory = ({ open, setOpen, setBrendsPage, selected, platfor
     const { getCategory } = useSelector((st) => st)
     const [id, setID] = useState()
     useEffect(() => {
-        console.log('getCategory', getCategory)
         if (getCategory?.data?.data?.length) {
             let sub = getCategory?.data?.data?.find((elm) => elm.id == selected?.id)
             setID(sub?.id)
@@ -93,18 +92,15 @@ export const AddSubCategory = ({ open, setOpen, setBrendsPage, selected, platfor
             .then(r => {
 
                 if (r.status) {
-                    console.log(platformId, 'platformId')
                     dispatch(GetCategory(platformId))
 
                     dispatch(SuccessCreateCategory(r))
                 }
                 else {
-                    console.log(r, '2211233')
                     dispatch(ErrorCreatCategory())
                 }
             })
             .catch(error => {
-                console.log(error, '2211233')
                 dispatch(ErrorCreatCategory())
             });
     }

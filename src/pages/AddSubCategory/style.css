@@ -68,15 +68,6 @@
     width: 31%;
 }
 
-.createButon {
-    background: #d1b587 !important;
-    color: #000 !important;
-}
-
-.createButon:hover {
-    background: #b89e76 !important;
-    color: #000 !important;
-}
 
 .eachProductPhoto {
     width: 17%;

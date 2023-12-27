@@ -191,3 +191,18 @@ export const SucessGetAllUser = (data) => {
         data
     }
 }
+
+
+export const SuccessGetComments = (data) => {
+    return {
+        type: 'SuccessGetComments',
+        data
+    }
+}
+
+export const SuccessGetComments1 = (data) => {
+    return {
+        type: 'SuccessGetComments1',
+        data
+    }
+}

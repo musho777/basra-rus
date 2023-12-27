@@ -1,14 +1,14 @@
 import {
     ErrorGetCategory, ErrorGetOrder, ErrorGetProduct, ErrorGetUser, ErrorLogin, ErrprGetSinglUser,
-    ErrorCreatProduct, ErrorCreatStoryTeam, ErrorDeletCategory, ErrorEditOrder, ErrorGetAllUSer, ErrorGetBreand, ErrorGetCollections, ErrorGetForAge, ErrorGetGenders, ErrorGetMyOrder, ErrorGetPlatforms, ErrorGetReducer, ErrorGetSinglOrder, ErrorGetSinglProfil, ErrorGetSinglStory, ErrorGetSlider, ErrorGetStoryTeam, ErrorSinglPageAction, ErrorUpdateProduct
+    ErrorCreatProduct, ErrorCreatStoryTeam, ErrorDeletCategory, ErrorEditOrder, ErrorGetAllUSer, ErrorGetBreand, ErrorGetCollections, ErrorGetForAge, ErrorGetGenders, ErrorGetMyOrder, ErrorGetPlatforms, ErrorGetReducer, ErrorGetSinglOrder, ErrorGetSinglProfil, ErrorGetSinglStory, ErrorGetSlider, ErrorGetStoryTeam, ErrorSinglPageAction, ErrorUpdateProduct, ErrorGetComments
 } from "./errorAction";
 import {
     StartGetCategory, StartGetOrders, StartGetProduct, StartGetSinglUser, StartGetUser, StartLogin,
-    StartCreatPorduct, StartCreataStoryTeam, StartDeletCategory, StartDeletStoryTeam, StartEditOrder, StartGetALLUser, StartGetBreands, StartGetCollections, StartGetForAge, StartGetGenders, StartGetMyOrder, StartGetPlatofrms, StartGetProducts, StartGetSinglOrder, StartGetSinglPageAction, StartGetSinglProfil, StartGetSinglStory, StartGetSlider, StartGetStoryTeam, StartUpdateProduct
+    StartCreatPorduct, StartCreataStoryTeam, StartDeletCategory, StartDeletStoryTeam, StartEditOrder, StartGetALLUser, StartGetBreands, StartGetCollections, StartGetForAge, StartGetGenders, StartGetMyOrder, StartGetPlatofrms, StartGetProducts, StartGetSinglOrder, StartGetSinglPageAction, StartGetSinglProfil, StartGetSinglStory, StartGetSlider, StartGetStoryTeam, StartUpdateProduct, StartGetComments
 } from "./startAction";
 import {
     SuccessGetCategory, SuccessGetOrders, SuccessGetProduct, SuccessGetUser,
-    SuccessCreatProduct, SuccessCreateStoryTeam, SuccessDelectCategory, SuccessGetBreand, SuccessGetChatRedcuer, SuccessGetCollections, SuccessGetForAge, SuccessGetGenders, SuccessGetMyOrder, SuccessGetPlatforms, SuccessGetProducts, SuccessGetSinglOrder, SuccessGetSinglProfil, SuccessGetSinglStory, SuccessGetSinglUser, SuccessGetSlider, SuccessGetStoryTeam, SuccessLastSlider, SuccessLogin, SuccessSinglPageChat, SuccessUpdateProduct, SucessGetAllUser
+    SuccessCreatProduct, SuccessCreateStoryTeam, SuccessDelectCategory, SuccessGetBreand, SuccessGetChatRedcuer, SuccessGetCollections, SuccessGetForAge, SuccessGetGenders, SuccessGetMyOrder, SuccessGetPlatforms, SuccessGetProducts, SuccessGetSinglOrder, SuccessGetSinglProfil, SuccessGetSinglStory, SuccessGetSinglUser, SuccessGetSlider, SuccessGetStoryTeam, SuccessLastSlider, SuccessLogin, SuccessSinglPageChat, SuccessUpdateProduct, SucessGetAllUser, SuccessGetComments, SuccessGetComments1
 
 } from "./successAction";
 
@@ -253,7 +253,6 @@ export const GetBrandAction = (page, id) => {
         fetch(`${api}/get_brands`, requestOptions)
             .then((r) => r.json())
             .then(r => {
-                console.log(r)
                 if (r.status) {
                     dispatch(SuccessGetBreand(r))
                 }
@@ -520,7 +519,6 @@ export const CreatProductAction = (data) => {
                     dispatch(SuccessCreatProduct(r))
                 }
                 else {
-                    console.log('2221', r)
                     dispatch(ErrorCreatProduct())
                 }
             })
@@ -1126,13 +1124,59 @@ export const GetAllUser = (page) => {
     }
 }
 
+export const GetComments = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
 
-export const ClearAddMsg = () => {
-    return {
-        type: 'ClearAddMsg'
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+    };
+    return (dispatch) => {
+        dispatch(StartGetComments())
+        fetch(`${api}/get_comments`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+                if (r.status) {
+                    dispatch(SuccessGetComments(r.data))
+                }
+                else {
+                    dispatch(ErrorGetComments())
+                }
+            })
+            .catch((error) => {
+                dispatch(ErrorGetComments())
+            });
     }
 }
 
-export const Message_show_ed = () => {
+export const ChangeStarStatus = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
 
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+    };
+    return (dispatch) => {
+        // dispatch(StartGetComments())
+        fetch(`${api}/change_status_comment`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+                if (r.status) {
+                    console.log(data.id, '22')
+                    dispatch(GetComments({ status: data.id }))
+                }
+                else {
+                    // dispatch(ErrorGetComments())
+                }
+            })
+            .catch((error) => {
+                // dispatch(ErrorGetComments())
+            });
+    }
 }

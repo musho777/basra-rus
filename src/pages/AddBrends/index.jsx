@@ -41,7 +41,6 @@ export const AddBrends = ({ open, setOpen, setBrendsPage, platformId, page }) =>
         myHeaders.append("Authorization", `Bearer ${token}`);
         var formdata = new FormData();
         formdata.append("name", newCategory.name);
-        console.log(platformId, 'platformId')
         formdata.append('platform_id', platformId)
         var requestOptions = {
             method: 'POST',
@@ -52,14 +51,11 @@ export const AddBrends = ({ open, setOpen, setBrendsPage, platformId, page }) =>
         fetch("https://basrarusbackend.justcode.am/api/admin/create_brand", requestOptions)
             .then(response => response.json())
             .then(r => {
-                console.log(r, '222')
                 if (r.status) {
-                    console.log(platformId, 'ss')
                     dispatch(GetBrandAction(1, platformId))
                     dispatch(SuccessDelectCategory(r))
                 }
                 else {
-                    console.log(r)
                     dispatch(ErrorCreatCategory())
                 }
             })

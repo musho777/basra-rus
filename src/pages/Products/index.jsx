@@ -20,12 +20,12 @@ export const Product = () => {
         setData(GetAllProductsReducer?.data?.data)
     }, [GetAllProductsReducer])
     return <div>
-        {addProduct &&
+        {/* {addProduct &&
             <AddProduct
                 open={addProduct}
                 setOpen={setAddProduct}
             />
-        }
+        } */}
         <div className='header'>
             <p>Товаров: {GetAllProductsReducer.data?.data?.length}</p>
             <div className='buttonWrapper'>
@@ -39,7 +39,7 @@ export const Product = () => {
 
                 </div>
                 <Input placeholder={'Поиск товара'} />
-                <Button onClick={() => setAddProduct(true)} green text={'Добавить товар'} />
+                <Button onClick={() => window.location = '/AddProducts'} green text={'Добавить товар'} />
             </div>
         </div>
         <div className='TableWrapper'>
@@ -67,7 +67,5 @@ export const Product = () => {
             }
         </div>
         {GetAllProductsReducer?.data?.last_page > 1 && <Pagination changeActiveButton={(e) => setActive(e)} length={GetAllProductsReducer?.data?.last_page} activeButton={active} />}
-
-        {/* <Pagination length={4} activeButton={0} /> */}
     </div>
 }

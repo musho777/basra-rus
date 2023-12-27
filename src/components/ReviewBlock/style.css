@@ -23,6 +23,13 @@
     line-height: normal;
 }
 
+.Stars {
+    display: flex;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 2px !important;
+}
+
 .Review {
     margin: 20px 0;
     color: #373737;

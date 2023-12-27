@@ -164,3 +164,10 @@ export const StartGetALLUser = () => {
         type: 'StartGetALLUser'
     }
 }
+
+
+export const StartGetComments = () => {
+    return {
+        type: 'StartGetComments'
+    }
+}

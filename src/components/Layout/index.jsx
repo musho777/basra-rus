@@ -16,7 +16,7 @@ export const Layout = () => {
         else if (curentPage == 'userlist' || curentPage == 'UserScreen') {
             setActiveButton(1)
         }
-        else if (curentPage == 'Product') {
+        else if (curentPage == 'Product' || curentPage == 'AddProducts') {
             setActiveButton(2)
 
         }

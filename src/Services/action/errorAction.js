@@ -164,3 +164,9 @@ export const ErrorGetSinglUser = () => {
         type: 'ErrorGetSinglUser'
     }
 }
+
+export const ErrorGetComments = () => {
+    return {
+        type: 'ErrorGetComments'
+    }
+}
