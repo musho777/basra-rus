@@ -8,6 +8,7 @@ import { UserScreen } from "../pages/userScreen"
 import { LoginScreen } from "../pages/LoginScreen"
 import { useSelector } from "react-redux"
 import { useEffect } from "react"
+import { Main } from "../pages/Main"
 
 export const Router = () => {
     let token = localStorage.getItem('token')
@@ -26,6 +27,7 @@ export const Router = () => {
                             <Route path="/ReviewsPage" element={<ReviewsPage />} />
                             <Route path="/Product" element={<Product />} />
                             <Route path="/UserScreen/:id" element={<UserScreen />} />
+                            <Route path="/Main" element={<Main />} />
                         </Route>
                         :
                         <Route path="/" element={<LoginScreen />} />
@@ -34,3 +36,4 @@ export const Router = () => {
         </BrowserRouter>
     )
 }
+// Main

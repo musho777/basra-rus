@@ -23,6 +23,9 @@ export const Layout = () => {
         else if (curentPage == 'ReviewsPage') {
             setActiveButton(4)
         }
+        else if (curentPage == 'Main') {
+            setActiveButton(3)
+        }
     }, [])
     return (<div className='outLet'>
         <div className='layout'>
@@ -32,7 +35,7 @@ export const Layout = () => {
                 <Button onClick={() => window.location = '/orderlist'} active={activeButton == 0} text={'Заказы'} />
                 <Button onClick={() => window.location = '/userlist'} active={activeButton == 1} text={'Пользователи'} />
                 <Button onClick={() => window.location = '/Product'} active={activeButton == 2} text={'Товары'} />
-                <Button onClick={() => window.location = '/userlist'} active={activeButton == 3} text={'Главная и Каталог'} />
+                <Button onClick={() => window.location = '/Main'} active={activeButton == 3} text={'Главная и Каталог'} />
                 <Button onClick={() => window.location = '/ReviewsPage'} active={activeButton == 4} text={'Отзывы'} />
             </div>
         </div>

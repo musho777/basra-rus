@@ -13,7 +13,7 @@ export const TableItem = ({ title, img, noborder, onClick = () => { }, name, pho
     }, [created_at])
     return <div onClick={() => onClick()} className='TableItem' style={noborder && { border: 'none' }} id={img ? 'TableItemIMgWrapper' : ''} >
         {img && <div >
-            <img className='TableItemImg' src={`https://basrabackend.justcode.am/uploads/${img.photo}`} />
+            <img className='TableItemImg' src={`https://basrarusbackend.justcode.am/uploads/${img.photo}`} />
         </div>}
         <div >
             <p className='Tablelabel'>{title[0]}</p>

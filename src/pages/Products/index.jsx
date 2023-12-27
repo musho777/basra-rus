@@ -6,8 +6,10 @@ import { Pagination } from '../../components/Pagination'
 import { Input } from '../../components/Input'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetAllProducts } from '../../Services/action/action'
+import { AddProduct } from '../AddProduct/index'
 export const Product = () => {
     const [data, setData] = useState([])
+    const [addProduct, setAddProduct] = useState(false)
     const [active, setActive] = useState(0)
     const dispatch = useDispatch()
     const { GetAllProductsReducer } = useSelector((st) => st)
@@ -18,6 +20,12 @@ export const Product = () => {
         setData(GetAllProductsReducer?.data?.data)
     }, [GetAllProductsReducer])
     return <div>
+        {addProduct &&
+            <AddProduct
+                open={addProduct}
+                setOpen={setAddProduct}
+            />
+        }
         <div className='header'>
             <p>Товаров: {GetAllProductsReducer.data?.data?.length}</p>
             <div className='buttonWrapper'>
@@ -31,7 +39,7 @@ export const Product = () => {
 
                 </div>
                 <Input placeholder={'Поиск товара'} />
-                <Button green text={'Добавить товар'} />
+                <Button onClick={() => setAddProduct(true)} green text={'Добавить товар'} />
             </div>
         </div>
         <div className='TableWrapper'>
