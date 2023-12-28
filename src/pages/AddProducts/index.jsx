@@ -275,9 +275,7 @@ export const AddProducts = () => {
         width: 1,
     })
 
-    function close() {
-        document.querySelector('.outlet').style.position = 'relative'
-    }
+
     useEffect(() => {
         if (error.photos != '') {
             Swal.fire(

@@ -6,26 +6,20 @@ import { Pagination } from '../../components/Pagination'
 import { Input } from '../../components/Input'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetAllProducts } from '../../Services/action/action'
-import { AddProduct } from '../AddProduct/index'
 export const Product = () => {
     const [data, setData] = useState([])
-    const [addProduct, setAddProduct] = useState(false)
     const [active, setActive] = useState(0)
     const dispatch = useDispatch()
     const { GetAllProductsReducer } = useSelector((st) => st)
+    const [search, setSearch] = useState()
+    console.log(search, 'search')
     useEffect(() => {
-        dispatch(GetAllProducts())
-    }, [])
+        dispatch(GetAllProducts(active, { search: search }))
+    }, [search, active])
     useEffect(() => {
         setData(GetAllProductsReducer?.data?.data)
     }, [GetAllProductsReducer])
     return <div>
-        {/* {addProduct &&
-            <AddProduct
-                open={addProduct}
-                setOpen={setAddProduct}
-            />
-        } */}
         <div className='header'>
             <p>Товаров: {GetAllProductsReducer.data?.data?.length}</p>
             <div className='buttonWrapper'>
@@ -38,7 +32,7 @@ export const Product = () => {
                     </svg>
 
                 </div>
-                <Input placeholder={'Поиск товара'} />
+                <Input value={search} onChange={(e) => setSearch(e)} placeholder={'Поиск товара'} />
                 <Button onClick={() => window.location = '/AddProducts'} green text={'Добавить товар'} />
             </div>
         </div>

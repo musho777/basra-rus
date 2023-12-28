@@ -5,14 +5,16 @@ import './style.css'
 import { Pagination } from '../../components/Pagination'
 import { useDispatch, useSelector } from 'react-redux'
 import { GetAllOrder } from '../../Services/action/action'
+import { Input } from '../../components/Input'
 export const OrderList = () => {
     const [data, setData] = useState([])
     const [active, setActive] = useState(0)
     const dispatch = useDispatch()
     const { GetAllOrdersReducer } = useSelector((st) => st)
+    const [searchNumber, setSearchNumber] = useState()
     useEffect(() => {
-        dispatch(GetAllOrder({}, active))
-    }, [active])
+        dispatch(GetAllOrder({ search: searchNumber }, active))
+    }, [active, searchNumber])
 
     useEffect(() => {
         setData(GetAllOrdersReducer?.data?.data)
@@ -22,7 +24,8 @@ export const OrderList = () => {
         <div className='header'>
             <p>Список заказов</p>
             <div className='buttonWrapper'>
-                <Button text={'Поиск по номеру'} />
+                <Input value={searchNumber} onChange={(e) => setSearchNumber(e)} width='200px' placeholder={'Поиск по номеру'} />
+                {/* <Button text={'Поиск по номеру'} /> */}
                 <Button text={'Фильтр по дате'} />
                 <Button green text={'Скачать таблицу'} />
             </div>
