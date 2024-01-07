@@ -3,9 +3,12 @@ import { Logo } from '../../Svg'
 import { Button } from '../button'
 import './style.css'
 import { Outlet } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { LogOutAction } from '../../Services/action/action'
 
 export const Layout = () => {
     const [activeButton, setActiveButton] = useState(0)
+    const dispatch = useDispatch()
     useEffect(() => {
         const currentURL = window.location.href;
         const parts = currentURL.split('/');
@@ -27,6 +30,13 @@ export const Layout = () => {
             setActiveButton(3)
         }
     }, [])
+
+    const LogOut = () => {
+        dispatch(LogOutAction())
+        localStorage.removeItem('token')
+        window.location = '/'
+    }
+
     return (<div className='outLet'>
         <div className='layout'>
             <Logo />
@@ -37,6 +47,7 @@ export const Layout = () => {
                 <Button onClick={() => window.location = '/Product'} active={activeButton == 2} text={'Товары'} />
                 <Button onClick={() => window.location = '/Main'} active={activeButton == 3} text={'Главная и Каталог'} />
                 <Button onClick={() => window.location = '/ReviewsPage'} active={activeButton == 4} text={'Отзывы'} />
+                <Button onClick={() => LogOut()} text={'Выйти'} />
             </div>
         </div>
         <div >

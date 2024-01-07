@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { ChangeStarStatus } from '../../Services/action/action'
 
 export const ReviewBlock = ({ message, product, name, d, star, status, commId, statusid }) => {
-    console.log(status, 'status')
     const [date, setDate] = useState()
     const [stare, setStare] = useState(['', '', '', '', ''])
     const dispatch = useDispatch()
@@ -19,7 +18,6 @@ export const ReviewBlock = ({ message, product, name, d, star, status, commId, s
     }, [d])
 
     const changeStatus = (id) => {
-        console.log(id)
         dispatch(ChangeStarStatus({ status: id, id: statusid, comment_id: commId, }))
     }
     return <div className='ReviewBlockDiv'>

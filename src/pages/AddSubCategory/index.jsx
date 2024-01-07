@@ -133,7 +133,7 @@ export const AddSubCategory = ({ open, setOpen, setBrendsPage, selected, platfor
                         return <div className='eachPopupDetail' key={i}>
                             <TextField label="имя" variant="filled" value={e?.name} onChange={(event) => handleCategoryChange(e, event.target.value)} />
                             <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                <b>صورة</b>اضغط للتحميل
+                                <b>изображение:</b>нажмите, чтобы скачать
                                 <VisuallyHiddenInput type="file" onChange={(event) => handleNewImageChange(e, event)} />
                                 <div className='eachCategoryPhoto'>
                                     {e.photo && !e.image ?
@@ -155,7 +155,7 @@ export const AddSubCategory = ({ open, setOpen, setBrendsPage, selected, platfor
                         {newCategory?.image
                             ? <>
                                 <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                    <b>صورة</b>اضغط للتحميل
+                                    <b>изображение:</b>нажмите, чтобы скачать
                                     <VisuallyHiddenInput type="file" onChange={handleNewImage} />
                                     <div className='eachCategoryPhoto'>
                                         <img alt='' src={newCategory.image} />
@@ -163,7 +163,7 @@ export const AddSubCategory = ({ open, setOpen, setBrendsPage, selected, platfor
                                 </Button>
                             </>
                             : <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                <b>صورة</b>اضغط للتحميل
+                                <b>изображение:</b>нажмите, чтобы скачать
                                 <VisuallyHiddenInput type="file" onChange={handleNewImage} />
                             </Button>
                         }

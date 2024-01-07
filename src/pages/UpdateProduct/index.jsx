@@ -5,12 +5,14 @@ import { styled } from '@mui/material/styles'
 import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
-import { Button, Checkbox, ListItemText, OutlinedInput, TextField } from '@mui/material'
+import { Button, Checkbox, ListItemText, OutlinedInput } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { CreatProductAction, GetBrandAction, GetCategory, GetCollectionAction, GetForAge, GetGendersAction, GetPlatforms } from '../../Services/action/action'
+import { GetBrandAction, GetCategory, GetCollectionAction, GetForAge, GetGendersAction, GetPlatforms, GetSinglProductAction, UpdateProduct } from '../../Services/action/action'
 import Swal from 'sweetalert2'
 import { Plus } from '../../Svg'
-export const AddProducts = () => {
+import { useParams } from 'react-router-dom'
+export const UpdateProducts = () => {
+    const { id } = useParams()
     const [details, setDetails] = useState({
         name: '',
         price: '',
@@ -59,23 +61,31 @@ export const AddProducts = () => {
     const { getCategory } = useSelector((st) => st)
     const { getCollections } = useSelector((st) => st)
     const { getForAge } = useSelector((st) => st)
-    const { createProduct } = useSelector((st) => st)
+    const { getSinglProduct } = useSelector((st) => st)
+    const [deletedPhotos, setDeletedPhotos] = useState([])
+    const { updateProduct } = useSelector((st) => st)
+    console.warn = function () { };
+    console.error = function () { };
+
 
     const CreateProduct = () => {
         let item = []
-        selectedSelection?.map((elm, i) => {
+        selectedSelection.map((elm, i) => {
             getCollections?.data?.data.map((e, i) => {
-                console.log(e.name == elm)
                 if (e.name == elm) {
                     item.push(e.id)
                 }
             })
         })
-        console.log(item)
         let send = true
         let temp = { ...error }
+        let deletetP = []
+        getSinglProduct.data?.podborki.map((elm, i) => {
+            deletetP.push(elm.id)
+        })
+
         if (details.name == '') {
-            temp.name = 'name'
+            temp.name = 'anuny partadir e '
             send = false
         }
         else {
@@ -115,15 +125,6 @@ export const AddProducts = () => {
         }
         else {
             temp.code = ''
-            send = true
-        }
-
-        if (!details.category.id) {
-            temp.category = 'giny partadir e '
-            send = false
-        }
-        else {
-            temp.category = ''
             send = true
         }
 
@@ -172,20 +173,15 @@ export const AddProducts = () => {
             send = true
         }
         if (!item?.length) {
-            temp.podborki = 'giny partadir e '
+            temp.podborki = '2'
             send = false
-            Swal.fire(
-                'Группы обязательна!',
-                '',
-                'error'
-            )
         }
         else {
             temp.podborki = ''
             send = true
         }
-        if (!photo.length) {
-            temp.photos = 'giny partadir e '
+        if (!photo.length && !details.photos.length) {
+            temp.photos = 'aa'
             send = false
         }
         else {
@@ -193,42 +189,75 @@ export const AddProducts = () => {
             send = true
         }
 
-        console.log(send, 'send')
         setError(temp)
         console.log(temp)
         Object.values(temp).map((elm, i) => {
+            console.log(elm)
             if (elm != '') {
+                console.log('112')
                 send = false
             }
         })
         if (send) {
-            dispatch(CreatProductAction({
+            dispatch(UpdateProduct({
                 name: details.name,
                 price: details.price,
                 discount: details.discount,
                 product_count: details.count,
                 volume: details.volume,
                 vendor_code: details.code,
+                // skin_type: details.skinType,
                 parent_category_id: details.category.id,
                 category_id: details.category.id,
+                // brands_id: details.brand,
+                // gender_id: details.gender,
                 for_age_id: details.forWho,
+                // platform_id: details.platform,
                 description: details.description,
                 characteristics: details.characteristics,
                 compound: details.composition,
                 podborki: item,
-                photos: photo
+                photos: photo,
+                deleted_podborki: deletetP,
+                deleted_photo: deletedPhotos,
+                product_id: id
             }))
         }
     }
 
-    const SelectCategoy = (e) => {
-        setDetails({ ...details, category: e.target.value })
+    const delateProduct = (data) => {
+        console.log(id)
+        let token = localStorage.getItem('token')
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', `Bearer ${token}`);
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(data),
+            redirect: 'follow'
+        };
+        fetch(`https://basrarusbackend.justcode.am/api/admin/delete_product`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+                console.log(r)
+                if (r.status) {
+                    window.location = '/Product'
+                }
+                else {
+                }
+            })
+            .catch((error) => {
+            });
     }
 
+    const SelectCategoy = (e) => {
+        let index = getCategory?.data?.data.findIndex((el) => el.id == e.target.value)
+        setDetails({ ...details, category: e.target.value })
+    }
     useEffect(() => {
         dispatch(GetCategory(2))
     }, [categoryPage])
-
 
 
     useEffect(() => {
@@ -239,16 +268,19 @@ export const AddProducts = () => {
         dispatch(GetCollectionAction(collectionsPage))
     }, [collectionsPage])
 
+
     useEffect(() => {
         dispatch(GetGendersAction())
         dispatch(GetForAge())
         dispatch(GetPlatforms())
+        dispatch(GetSinglProductAction({ product_id: id }))
         dispatch(GetCategory(2))
-        // document.querySelector('.outlet').style.position = 'fixed'
-    }, [details.platform])
+    }, [])
 
     const handleSelectionChange = (event) => {
         const { target: { value } } = event
+
+
         setSelectedSelection(
             typeof value === 'string' ? value.split(',') : value,
         )
@@ -270,6 +302,7 @@ export const AddProducts = () => {
     function deleteFile(event) {
         setPhotos(photos.filter((item, index) => index !== event))
         setFiles(files.filter((item, index) => index !== event))
+        setPhoto(photo.filter((item, index) => index !== event))
     }
 
     const VisuallyHiddenInput = styled('input')({
@@ -283,7 +316,6 @@ export const AddProducts = () => {
         whiteSpace: 'nowrap',
         width: 1,
     })
-
 
     useEffect(() => {
         if (error.photos != '') {
@@ -372,19 +404,69 @@ export const AddProducts = () => {
         }
     }, [error])
     useEffect(() => {
-        console.log(createProduct.error != '', 'createProduct.error')
-        if (createProduct.status) {
-            window.location = '/Product'
+        if (updateProduct.status) {
+            window.location = '/product'
         }
-        else if (createProduct.error != '') {
+        else if (updateProduct.error != '') {
             Swal.fire(
-                `Код поставщика уже занят.`,
+                'Код поставщика уже занят',
                 '',
                 'error'
             )
         }
-    }, [createProduct])
+    }, [updateProduct])
 
+
+    const DeletPhoto = (e, i) => {
+        let temp = { ...details }
+        let item = [...deletedPhotos]
+        item.push(e.id)
+        temp.photos.splice(i, 1)
+        setDetails(temp)
+        setDeletedPhotos(item)
+    }
+
+
+    useEffect(() => {
+        let index = getCategory?.data?.data?.findIndex((el) => el.id == getSinglProduct.data?.parent_category_id)
+        if (getCategory.data?.data?.length > 0) {
+            setDetails({ ...details, category: getCategory?.data?.data[index] })
+        }
+    }, [getCategory, getSinglProduct])
+
+
+    useEffect(() => {
+        if (getSinglProduct.data) {
+            let data = getSinglProduct.data
+            // setDetails({ ...details, category: e.target.value })
+            let item = []
+            setPhotos(data.photos)
+            setDetails({
+                name: data.name,
+                price: data.price,
+                discount: data.discount,
+                count: data.product_count,
+                volume: data.volume,
+                code: data.vendor_code,
+                // skinType: data.skin_type,
+                gender: data.gender_id,
+                forWho: data.for_age_id,
+                platform: data.platform_id,
+                description: data.description,
+                characteristics: data.characteristics,
+                composition: data.compound,
+                category: getCategory?.data?.data?.find((elm) => elm.id == data.parent_category_id),
+                subcategory: data.category_id,
+                brand: data.brands_id,
+                sub: getCategory?.data?.data?.find((elm) => elm.id == data.parent_category_id),
+                photos: data.photos
+            })
+            data?.podborki?.map((e, i) => {
+                item.push(e.name)
+            })
+            setSelectedSelection(item)
+        }
+    }, [getSinglProduct])
 
 
     return <div>
@@ -432,7 +514,6 @@ export const AddProducts = () => {
                 <input
                     className='Productinput'
                     placeholder='Количество'
-                    type='number'
                     value={details?.count}
                     onChange={(e) => setDetails({ ...details, count: e.target.value })}
                 />
@@ -515,17 +596,29 @@ export const AddProducts = () => {
                 />
             </div>
             <div className='firstBlock'>
-                {photos.length > 0 && photos.map((e, i) => (
-                    <div className='eachProductPhoto' key={i}>
-                        <div className='AddImg'>
-                            <p onClick={() => {
-                                // DeletPhoto(e, i)
-                                deleteFile(i)
-                            }}>x</p>
-                            <img alt='' src={e} />
+                {photos?.length > 0 && photos.map((e, i) => {
+                    return <div className='eachProductPhoto' key={i}>
+                        {e?.photo ?
+                            <div className='AddImg'>
+                                <p onClick={() => {
+                                    DeletPhoto(e, i)
+                                    // deleteFile(i)
+                                }}>x</p>
+                                <img alt='' src={`https://basrarusbackend.justcode.am/uploads/${e.photo}`} />
+                            </div>
+                            : <div className='AddImg'>
+                                <p
+                                    onClick={() => {
+                                        DeletPhoto(e, i)
+                                        // deleteFile(i)
+                                    }}>x</p>
+                                <img alt='' src={e} />
+                            </div>
+                        }
+                        <div className='deletePhoto' onClick={() => deleteFile(i)}>
                         </div>
                     </div>
-                ))}
+                })}
             </div>
             <div className='firstBlock'>
                 <Button component="label">
@@ -534,8 +627,9 @@ export const AddProducts = () => {
                 </Button>
             </div>
             <div className='firstBlock'>
+                <button onClick={() => delateProduct({ product_id: id })} className='DelateProductButton'>УДАЛИТ</button>
                 <button onClick={() => CreateProduct()} className='creatProductButton'>СОХРАНИТЬ</button>
             </div>
         </div>
-    </div>
+    </div >
 }

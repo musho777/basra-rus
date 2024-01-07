@@ -26,7 +26,7 @@ export const OrderList = () => {
             <div className='buttonWrapper'>
                 <Input value={searchNumber} onChange={(e) => setSearchNumber(e)} width='200px' placeholder={'Поиск по номеру'} />
                 {/* <Button text={'Поиск по номеру'} /> */}
-                <Button text={'Фильтр по дате'} />
+                {/* <Button text={'Фильтр по дате'} /> */}
                 <Button green text={'Скачать таблицу'} />
             </div>
         </div>
@@ -34,6 +34,7 @@ export const OrderList = () => {
             {
                 data?.map((elm, i) => {
                     return <TableItem
+                        onClick={() => window.location = `/SinglProduct/${elm.id}`}
                         title={[
                             'Номер заказа',
                             'Сумма заказа',
@@ -45,7 +46,7 @@ export const OrderList = () => {
                         name={elm.id}
                         phone={elm.order_sum}
                         date_of_birth={elm.status}
-                        volume={elm.deliver?.name}
+                        volume={elm.delivery_id}
                         order_count={elm.payment_id}
                         created_at1={elm.created_at}
                         key={i} />

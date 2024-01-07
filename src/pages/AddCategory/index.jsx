@@ -12,7 +12,7 @@ export const AddCategory = ({ open, setOpen, platformId }) => {
     const { getCategory } = useSelector((st) => st)
 
     useEffect(() => {
-        dispatch(GetCategory(platformId))
+        dispatch(GetCategory(2))
     }, [])
 
     useEffect(() => {
@@ -88,15 +88,11 @@ export const AddCategory = ({ open, setOpen, platformId }) => {
             .then(response => response.json())
             .then(r => {
                 if (r.status) {
-                    dispatch(GetCategory(platformId))
-                    // dispatch(SuccessCreateCategory(r))
+                    dispatch(GetCategory(2))
                 }
-                else {
-                    // dispatch(ErrorCreatCategory())
-                }
+
             })
             .catch(error => {
-                // dispatch(ErrorCreatCategory())
             });
     }
 
@@ -121,14 +117,14 @@ export const AddCategory = ({ open, setOpen, platformId }) => {
         <div className={open ? 'activePopup activeSecondaryPopup' : 'inactive'}>
             <div className='pop secondaryPop'>
                 <div className='popTitle'>
-                    <h1>فئات</h1>
+                    <h1>категории</h1>
                 </div>
                 {!getCategory.loading ? <div className='popupContent'>
                     {categories?.length > 0 && categories?.map((e, i) => {
                         return <div className='eachPopupDetail' key={i}>
                             <TextField label="имя" variant="filled" value={e?.name} onChange={(event) => handleCategoryChange(e, event.target.value)} />
                             <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                <b>صورة</b>اضغط للتحميل
+                                <b>изображение:</b>нажмите, чтобы скачать
                                 <VisuallyHiddenInput type="file" onChange={(event) => handleNewImageChange(e, event)} />
                                 <div className='eachCategoryPhoto'>
                                     {e.photo && !e.image ?
@@ -150,7 +146,7 @@ export const AddCategory = ({ open, setOpen, platformId }) => {
                         {newCategory?.image
                             ? <>
                                 <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                    <b>صورة</b>اضغط للتحميل
+                                    <b>изображение:</b>нажмите, чтобы скачать
                                     <VisuallyHiddenInput type="file" onChange={handleNewImage} />
                                     <div className='eachCategoryPhoto'>
                                         <img alt='' src={newCategory.image} />
@@ -158,11 +154,11 @@ export const AddCategory = ({ open, setOpen, platformId }) => {
                                 </Button>
                             </>
                             : <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                <b>صورة</b>اضغط للتحميل
+                                <b>изображение:</b>нажмите, чтобы скачать
                                 <VisuallyHiddenInput type="file" onChange={handleNewImage} />
                             </Button>
                         }
-                        {newCategory?.image?.length > 0 && newCategory?.name?.length > 0 && <Button component="label" variant="contained" className='createButon' onClick={handleNewCategory}>يضيف</Button>}
+                        {newCategory?.image?.length > 0 && newCategory?.name?.length > 0 && <Button component="label" variant="contained" className='createButon' onClick={handleNewCategory}>добавляет</Button>}
                     </div>
                 </div> :
                     // <Loading />
@@ -170,7 +166,7 @@ export const AddCategory = ({ open, setOpen, platformId }) => {
                 }
 
                 <div className='closePop'>
-                    <Button component="label" variant="contained" color='grey' onClick={close}>يغلق</Button>
+                    <Button component="label" variant="contained" color='grey' onClick={close}>закрывать</Button>
                 </div>
             </div>
         </div>

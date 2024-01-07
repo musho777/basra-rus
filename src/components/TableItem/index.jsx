@@ -25,7 +25,7 @@ export const TableItem = ({ title, img, noborder, onClick = () => { }, name, pho
         </div>
         <div>
             <p className='Tablelabel'>{title[2]}</p>
-            {(email && created_at) ? <p className='TablelItem'>{email == 1 ? '' : email}</p>
+            {(email && !created_at) ? <p className='TablelItem'>{email == 1 ? '' : email}</p>
                 : <p className='TablelItem'>{date?.getMonth() + 1}.{date?.getDate()}.{date?.getFullYear()}</p>
             }
         </div>
@@ -36,7 +36,6 @@ export const TableItem = ({ title, img, noborder, onClick = () => { }, name, pho
         <div>
             <p className='Tablelabel'>{title[4]}</p>
             {created_at ?
-
                 <p className='TablelItem'>{date?.getMonth() + 1}.{date?.getDate()}.{date?.getFullYear()}</p> :
                 <p className='TablelItem'>{volume}</p>
             }

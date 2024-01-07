@@ -10,6 +10,8 @@ import { useSelector } from "react-redux"
 import { useEffect } from "react"
 import { Main } from "../pages/Main"
 import { AddProducts } from "../pages/AddProducts"
+import { SinglProduct } from "../pages/SinglProduct"
+import { UpdateProducts } from "../pages/UpdateProduct"
 
 export const Router = () => {
     let token = localStorage.getItem('token')
@@ -30,6 +32,8 @@ export const Router = () => {
                             <Route path="/UserScreen/:id" element={<UserScreen />} />
                             <Route path="/Main" element={<Main />} />
                             <Route path="/AddProducts" element={<AddProducts />} />
+                            <Route path="/SinglProduct/:id" element={<SinglProduct />} />
+                            <Route path="/UpdateProduct/:id" element={<UpdateProducts />} />
 
                         </Route>
                         :
@@ -39,5 +43,4 @@ export const Router = () => {
         </BrowserRouter>
     )
 }
-// Main
-// AddProducts
+// UpdateProduct

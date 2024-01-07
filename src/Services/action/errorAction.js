@@ -170,3 +170,15 @@ export const ErrorGetComments = () => {
         type: 'ErrorGetComments'
     }
 }
+
+export const ErrorGetSinglProduct = () => {
+    return {
+        type: 'ErrorGetSinglProduct'
+    }
+}
+
+export const ErrorGetPadborki = () => {
+    return {
+        type: 'ErrorGetPadborki'
+    }
+}

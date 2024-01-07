@@ -84,7 +84,7 @@ export const AddBanner = ({ open, setOpen, type, platformid }) => {
         <div className={open ? 'activePopup activeSecondaryPopup' : 'inactive'}>
             <div className='pop secondaryPop'>
                 <div className='popTitle'>
-                    <h1>راية</h1>
+                    <h1>Ответ</h1>
                 </div>
                 {!getSlider.loading ? <div className='popupContent'>
                     {categories?.length > 0 && categories?.map((e, i) => {
@@ -94,7 +94,7 @@ export const AddBanner = ({ open, setOpen, type, platformid }) => {
                         }
                         return <div className='eachPopupDetail' key={i}>
                             <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                <b>صورة</b>اضغط للتحميل
+                                <b>изображение:</b>нажмите, чтобы скачать
                                 <VisuallyHiddenInput type="file" onChange={(event) => handleNewImageChange(e, event)} />
                                 {file == 'image' ? <div className='eachCategoryPhoto'>
                                     {e.file && !e.image ?
@@ -126,7 +126,7 @@ export const AddBanner = ({ open, setOpen, type, platformid }) => {
                         {newCategory?.image
                             ? <>
                                 <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                    <b>صورة</b>اضغط للتحميل
+                                    <b>изображение:</b>нажмите, чтобы скачать
                                     <VisuallyHiddenInput type="file" onChange={handleNewImage} />
                                     {fileType == 'image' ? <div className='eachCategoryPhoto'>
                                         <img alt='' src={newCategory.image} />
@@ -138,11 +138,11 @@ export const AddBanner = ({ open, setOpen, type, platformid }) => {
                                 </Button>
                             </>
                             : <Button component="label" variant="contained" color='grey' fullWidth sx={{ textAlign: 'center', flexDirection: 'column' }}>
-                                <b>صورة</b>اضغط للتحميل
+                                <b>изображение:</b>нажмите, чтобы скачать
                                 <VisuallyHiddenInput type="file" onChange={handleNewImage} />
                             </Button>
                         }
-                        {newCategory?.image?.length > 0 && <Button component="label" variant="contained" className='createButon' onClick={handleNewCategory}>يضيف</Button>}
+                        {newCategory?.image?.length > 0 && <Button component="label" variant="contained" className='createButon' onClick={handleNewCategory}>добавляет</Button>}
                     </div>
                 </div> :
                     <Loading />

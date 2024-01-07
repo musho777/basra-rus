@@ -206,3 +206,17 @@ export const SuccessGetComments1 = (data) => {
         data
     }
 }
+
+export const SuccessGetSinglProduct = (data) => {
+    return {
+        type: "SuccessGetSinglProduct",
+        data
+    }
+}
+
+export const SuccessGetPadborki = (data) => {
+    return {
+        type: 'SuccessGetPadborki',
+        data
+    }
+}

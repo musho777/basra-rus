@@ -171,3 +171,15 @@ export const StartGetComments = () => {
         type: 'StartGetComments'
     }
 }
+
+export const StartGetSinglProduct = () => {
+    return {
+        type: 'StartGetSinglProduct'
+    }
+}
+
+export const StartGetPadborki = () => {
+    return {
+        type: 'StartGetPadborki'
+    }
+}

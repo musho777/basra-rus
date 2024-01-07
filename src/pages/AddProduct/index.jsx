@@ -451,7 +451,7 @@ export const AddProduct = ({ open, setOpen }) => {
                                     })}
                                 </Select>
                             </FormControl>
-                            <Button variant="contained" color='grey' onClick={() => setOpenCategory(true)}>فئات</Button>
+                            <Button variant="contained" color='grey' onClick={() => setOpenCategory(true)}>категории</Button>
                         </div>}
                         {details.category && <div className='catsAndSubcats'>
                             <FormControl variant="filled" sx={{ width: '71%' }}  >
@@ -512,9 +512,12 @@ export const AddProduct = ({ open, setOpen }) => {
 
                         {photos.length > 0 && photos.map((e, i) => (
                             <div className='eachProductPhoto' key={i}>
-                                <img alt='' src={e} />
-                                <div className='deletePhoto' onClick={() => deleteFile(i)}>
-                                    <CloseIcon />
+                                <div className='AddImg'>
+                                    <p onClick={() => {
+                                        // DeletPhoto(e, i)
+                                        // deleteFile(i)
+                                    }}>x</p>
+                                    <img alt='' src={`https://basrarusbackend.justcode.am/uploads/${e.photo}`} />
                                 </div>
                             </div>
                         ))}

@@ -1,14 +1,14 @@
 import {
     ErrorGetCategory, ErrorGetOrder, ErrorGetProduct, ErrorGetUser, ErrorLogin, ErrprGetSinglUser,
-    ErrorCreatProduct, ErrorCreatStoryTeam, ErrorDeletCategory, ErrorEditOrder, ErrorGetAllUSer, ErrorGetBreand, ErrorGetCollections, ErrorGetForAge, ErrorGetGenders, ErrorGetMyOrder, ErrorGetPlatforms, ErrorGetReducer, ErrorGetSinglOrder, ErrorGetSinglProfil, ErrorGetSinglStory, ErrorGetSlider, ErrorGetStoryTeam, ErrorSinglPageAction, ErrorUpdateProduct, ErrorGetComments
+    ErrorCreatProduct, ErrorCreatStoryTeam, ErrorDeletCategory, ErrorEditOrder, ErrorGetAllUSer, ErrorGetBreand, ErrorGetCollections, ErrorGetForAge, ErrorGetGenders, ErrorGetMyOrder, ErrorGetPlatforms, ErrorGetReducer, ErrorGetSinglOrder, ErrorGetSinglProfil, ErrorGetSinglStory, ErrorGetSlider, ErrorGetStoryTeam, ErrorSinglPageAction, ErrorUpdateProduct, ErrorGetComments, ErrorGetSinglProduct, ErrorGetPadborki
 } from "./errorAction";
 import {
     StartGetCategory, StartGetOrders, StartGetProduct, StartGetSinglUser, StartGetUser, StartLogin,
-    StartCreatPorduct, StartCreataStoryTeam, StartDeletCategory, StartDeletStoryTeam, StartEditOrder, StartGetALLUser, StartGetBreands, StartGetCollections, StartGetForAge, StartGetGenders, StartGetMyOrder, StartGetPlatofrms, StartGetProducts, StartGetSinglOrder, StartGetSinglPageAction, StartGetSinglProfil, StartGetSinglStory, StartGetSlider, StartGetStoryTeam, StartUpdateProduct, StartGetComments
+    StartCreatPorduct, StartCreataStoryTeam, StartDeletCategory, StartDeletStoryTeam, StartEditOrder, StartGetALLUser, StartGetBreands, StartGetCollections, StartGetForAge, StartGetGenders, StartGetMyOrder, StartGetPlatofrms, StartGetProducts, StartGetSinglOrder, StartGetSinglPageAction, StartGetSinglProfil, StartGetSinglStory, StartGetSlider, StartGetStoryTeam, StartUpdateProduct, StartGetComments, StartGetSinglProduct, StartGetPadborki
 } from "./startAction";
 import {
     SuccessGetCategory, SuccessGetOrders, SuccessGetProduct, SuccessGetUser,
-    SuccessCreatProduct, SuccessCreateStoryTeam, SuccessDelectCategory, SuccessGetBreand, SuccessGetChatRedcuer, SuccessGetCollections, SuccessGetForAge, SuccessGetGenders, SuccessGetMyOrder, SuccessGetPlatforms, SuccessGetProducts, SuccessGetSinglOrder, SuccessGetSinglProfil, SuccessGetSinglStory, SuccessGetSinglUser, SuccessGetSlider, SuccessGetStoryTeam, SuccessLastSlider, SuccessLogin, SuccessSinglPageChat, SuccessUpdateProduct, SucessGetAllUser, SuccessGetComments, SuccessGetComments1
+    SuccessCreatProduct, SuccessCreateStoryTeam, SuccessDelectCategory, SuccessGetBreand, SuccessGetChatRedcuer, SuccessGetCollections, SuccessGetForAge, SuccessGetGenders, SuccessGetMyOrder, SuccessGetPlatforms, SuccessGetProducts, SuccessGetSinglOrder, SuccessGetSinglProfil, SuccessGetSinglStory, SuccessGetSinglUser, SuccessGetSlider, SuccessGetStoryTeam, SuccessLastSlider, SuccessLogin, SuccessSinglPageChat, SuccessUpdateProduct, SucessGetAllUser, SuccessGetComments, SuccessGetComments1, SuccessGetSinglProduct, SuccessGetPadborki
 
 } from "./successAction";
 
@@ -478,7 +478,6 @@ export const CreatProductAction = (data) => {
     let token = localStorage.getItem('token')
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${token}`);
-
     var formdata = new FormData();
     formdata.append("name", data.name)
     formdata.append("price", data.price);
@@ -488,11 +487,11 @@ export const CreatProductAction = (data) => {
     formdata.append("vendor_code", data.vendor_code);
     formdata.append("skin_type", data.skin_type);
     formdata.append("parent_category_id", data.parent_category_id);
-    formdata.append("category_id", data.category_id);
-    formdata.append("brands_id", data.brands_id);
-    formdata.append("gender_id", data.gender_id);
+    // formdata.append("category_id", data.category_id);
+    // formdata.append("brands_id", data.brands_id);
+    // formdata.append("gender_id", data.gender_id);
     formdata.append("for_age_id", data.for_age_id);
-    formdata.append("platform_id", data.platform_id);
+    // formdata.append("platform_id", data.platform_id);
     formdata.append("description", data.description);
     formdata.append("characteristics", data.characteristics);
     formdata.append("compound", data.compound);
@@ -519,6 +518,7 @@ export const CreatProductAction = (data) => {
                     dispatch(SuccessCreatProduct(r))
                 }
                 else {
+                    console.log(r)
                     dispatch(ErrorCreatProduct())
                 }
             })
@@ -594,15 +594,14 @@ export const UpdateProduct = (data) => {
     formdata.append("skin_type", data.skin_type);
     formdata.append("parent_category_id", data.parent_category_id);
     formdata.append("category_id", data.category_id);
-    formdata.append("brands_id", data.brands_id);
-    formdata.append("gender_id", data.gender_id);
+    // formdata.append("brands_id", data.brands_id);
+    // formdata.append("gender_id", data.gender_id);
     formdata.append("for_age_id", data.for_age_id);
-    formdata.append("platform_id", data.platform_id);
+    // formdata.append("platform_id", data.platform_id);
     formdata.append("description", data.description);
     formdata.append("characteristics", data.characteristics);
     formdata.append("compound", data.compound);
     formdata.append("product_id", data.product_id)
-
     for (const image of data.photos) {
         formdata.append("photos[]", image);
     }
@@ -622,11 +621,13 @@ export const UpdateProduct = (data) => {
         body: formdata,
         redirect: 'follow'
     };
+    console.log('11')
     return (dispatch) => {
         dispatch(StartUpdateProduct())
         fetch(`${api}/update_product`, requestOptions)
             .then(response => response.json())
             .then(r => {
+                console.log(r)
                 if (r.status) {
                     dispatch(SuccessUpdateProduct(r))
                 }
@@ -635,6 +636,7 @@ export const UpdateProduct = (data) => {
                 }
             })
             .catch(error => {
+                console.log(error)
                 dispatch(ErrorUpdateProduct())
             });
     }
@@ -835,6 +837,7 @@ export const GetSliderAction = (data, id) => {
             .then((r) => r.json())
             .then(r => {
                 if (r.status) {
+
                     if (data === 'first') {
                         dispatch(SuccessGetSlider(r.data))
                     }
@@ -1168,7 +1171,6 @@ export const ChangeStarStatus = (data) => {
             .then((r) => r.json())
             .then(r => {
                 if (r.status) {
-                    console.log(data.id, '22')
                     dispatch(GetComments({ status: data.id }))
                 }
                 else {
@@ -1177,6 +1179,80 @@ export const ChangeStarStatus = (data) => {
             })
             .catch((error) => {
                 // dispatch(ErrorGetComments())
+            });
+    }
+}
+
+
+export const GetSinglPorduct = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+    };
+    return (dispatch) => {
+        dispatch(StartGetSinglProduct())
+        fetch(`${api}/single_page_order`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+                if (r.status) {
+                    dispatch(SuccessGetSinglProduct(r.data))
+                }
+                else {
+                    dispatch(ErrorGetSinglProduct())
+                }
+            })
+            .catch((error) => {
+                dispatch(ErrorGetSinglProduct())
+            });
+    }
+}
+
+
+export const ChangeOrderStatus = (data) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(data),
+    };
+    return (dispatch) => {
+        fetch(`${api}/change_status_for_order`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+            })
+            .catch((error) => {
+            });
+    }
+}
+
+export const GetPorductWhitePadborki = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+    };
+    return (dispatch) => {
+        dispatch(StartGetPadborki())
+        fetch(`https://basrarusbackend.justcode.am/api/app/get_podborki_with_products`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+                if (r.status) {
+                    dispatch(SuccessGetPadborki(r.data))
+                }
+            })
+            .catch((error) => {
+                dispatch(ErrorGetPadborki())
             });
     }
 }

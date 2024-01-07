@@ -17,6 +17,8 @@
 
 .imgBaner {
     width: 100px;
+    height: 100px;
+    object-fit: cover;
 }
 
 .BanerBlock1 {
@@ -35,8 +37,26 @@
 }
 
 
+.activePopup {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 999;
+}
 
 .select {
     width: 100px;
     height: 40px;
+}
+
+.CategoryDiv {
+    display: flex;
+    gap: 30px;
+}
+
+.PadborkiDiv {
+    display: flex;
+    gap: 20px;
 }
