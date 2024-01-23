@@ -182,3 +182,9 @@ export const ErrorGetPadborki = () => {
         type: 'ErrorGetPadborki'
     }
 }
+
+export const ErrorGertPeau = () => {
+    return {
+        type: "ErrorGertPeau"
+    }
+}

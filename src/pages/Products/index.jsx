@@ -5,7 +5,7 @@ import './style.css'
 import { Pagination } from '../../components/Pagination'
 import { Input } from '../../components/Input'
 import { useDispatch, useSelector } from 'react-redux'
-import { GetAllProducts, GetCategory } from '../../Services/action/action'
+import { GetAllProducts, GetCategory, GetTypePeau } from '../../Services/action/action'
 import { MenuItem } from '@mui/material'
 export const Product = () => {
     const [data, setData] = useState([])
@@ -18,6 +18,7 @@ export const Product = () => {
     const { getCategory } = useSelector((st) => st)
     useEffect(() => {
         dispatch(GetCategory(2))
+        dispatch(GetTypePeau())
     }, [])
 
     useEffect(() => {

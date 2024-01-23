@@ -14,7 +14,8 @@
 }
 
 .titleAdminPanel {
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif !important;
+
     font-size: 40px;
     font-weight: 700;
     line-height: 49px;
@@ -26,4 +27,11 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+}
+
+.Logout {
+    position: absolute;
+    top: 100px;
+    right: 150px;
+    cursor: pointer;
 }

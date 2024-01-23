@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Logo } from '../../Svg'
+import { LogOutSVG, Logo } from '../../Svg'
 import { Button } from '../button'
 import './style.css'
 import { Outlet } from 'react-router-dom'
@@ -41,13 +41,17 @@ export const Layout = () => {
         <div className='layout'>
             <Logo />
             <p className='titleAdminPanel'>Админ-панель PLAZAN APP</p>
+            <div className='Logout' onClick={() => LogOut()}>
+                <LogOutSVG />
+                {/* <Button onClick={() => LogOut()} text={'Выйти'} /> */}
+            </div>
             <div className='buttonDiv'>
                 <Button onClick={() => window.location = '/orderlist'} active={activeButton == 0} text={'Заказы'} />
                 <Button onClick={() => window.location = '/userlist'} active={activeButton == 1} text={'Пользователи'} />
                 <Button onClick={() => window.location = '/Product'} active={activeButton == 2} text={'Товары'} />
                 <Button onClick={() => window.location = '/Main'} active={activeButton == 3} text={'Главная и Каталог'} />
                 <Button onClick={() => window.location = '/ReviewsPage'} active={activeButton == 4} text={'Отзывы'} />
-                <Button onClick={() => LogOut()} text={'Выйти'} />
+
             </div>
         </div>
         <div >

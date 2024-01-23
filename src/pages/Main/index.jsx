@@ -62,7 +62,7 @@ export const Main = () => {
         <div className='BanerBlock1'>
             <div className='BanerBlock'>
                 <p className="baner">Баннеры</p>
-                <div>
+                <div className='Banerrr'>
                     {getSlider?.data?.map((elm, i) => {
                         return <div key={i} className='imgWrapperBaner'>
                             <img className='imgBaner' src={`https://basrarusbackend.justcode.am/uploads/${elm.file}`} />

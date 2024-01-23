@@ -7,7 +7,7 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import { Button, Checkbox, ListItemText, OutlinedInput } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { GetBrandAction, GetCategory, GetCollectionAction, GetForAge, GetGendersAction, GetPlatforms, GetSinglProductAction, UpdateProduct } from '../../Services/action/action'
+import { GetBrandAction, GetCategory, GetCollectionAction, GetForAge, GetGendersAction, GetPlatforms, GetSinglProductAction, GetTypePeau, UpdateProduct } from '../../Services/action/action'
 import Swal from 'sweetalert2'
 import { Plus } from '../../Svg'
 import { useParams } from 'react-router-dom'
@@ -20,7 +20,7 @@ export const UpdateProducts = () => {
         count: '',
         volume: '',
         code: '',
-        // skinType: '',
+        skinType: '',
         gender: '',
         forWho: '',
         platform: '',
@@ -38,7 +38,7 @@ export const UpdateProducts = () => {
         count: '',
         volume: '',
         code: '',
-        // skinType: '',
+        skinType: '',
         gender: '',
         forWho: '',
         platform: '',
@@ -64,9 +64,17 @@ export const UpdateProducts = () => {
     const { getSinglProduct } = useSelector((st) => st)
     const [deletedPhotos, setDeletedPhotos] = useState([])
     const { updateProduct } = useSelector((st) => st)
+    const { getPeau } = useSelector((st) => st)
+
     console.warn = function () { };
     console.error = function () { };
 
+    const SelectType = (e) => {
+        setDetails({ ...details, skinType: e.target.value })
+    }
+    useEffect(() => {
+        dispatch(GetTypePeau())
+    }, [])
 
     const CreateProduct = () => {
         let item = []
@@ -190,11 +198,8 @@ export const UpdateProducts = () => {
         }
 
         setError(temp)
-        console.log(temp)
         Object.values(temp).map((elm, i) => {
-            console.log(elm)
             if (elm != '') {
-                console.log('112')
                 send = false
             }
         })
@@ -220,13 +225,17 @@ export const UpdateProducts = () => {
                 photos: photo,
                 deleted_podborki: deletetP,
                 deleted_photo: deletedPhotos,
-                product_id: id
+                product_id: id,
+                peau_id: details?.skinType?.id
             }))
         }
     }
 
+
+    console.log(details.skinType
+        , 'details.skinType')
+
     const delateProduct = (data) => {
-        console.log(id)
         let token = localStorage.getItem('token')
         var myHeaders = new Headers();
         myHeaders.append('Authorization', `Bearer ${token}`);
@@ -240,7 +249,6 @@ export const UpdateProducts = () => {
         fetch(`https://basrarusbackend.justcode.am/api/admin/delete_product`, requestOptions)
             .then((r) => r.json())
             .then(r => {
-                console.log(r)
                 if (r.status) {
                     window.location = '/Product'
                 }
@@ -434,6 +442,15 @@ export const UpdateProducts = () => {
         }
     }, [getCategory, getSinglProduct])
 
+    useEffect(() => {
+        let index = getPeau?.data?.findIndex((el) => el.id == getSinglProduct.data?.peau_id)
+        if (getPeau.data?.length > 0) {
+            console.log(getPeau.data[index], '11')
+            setDetails({ ...details, skinType: getPeau.data[index] })
+        }
+
+    }, [getPeau, getSinglProduct])
+
 
     useEffect(() => {
         if (getSinglProduct.data) {
@@ -448,7 +465,7 @@ export const UpdateProducts = () => {
                 count: data.product_count,
                 volume: data.volume,
                 code: data.vendor_code,
-                // skinType: data.skin_type,
+                skinType: getPeau?.data?.find((elm) => elm.id == data.peau_id),
                 gender: data.gender_id,
                 forWho: data.for_age_id,
                 platform: data.platform_id,
@@ -475,125 +492,170 @@ export const UpdateProducts = () => {
         </div>
         <div className='AddProductBlock1'>
             <div className='firstBlock'>
-                <input
-                    className='Productinput'
-                    onChange={(e) => setDetails({ ...details, name: e.target.value })}
-                    placeholder='Наименование'
-                    value={details?.name}
-                    style={{ width: '450px' }}
-                />
-                <input
-                    className='Productinput'
-                    onChange={(e) => setDetails({ ...details, code: e.target.value })}
-                    value={details?.code}
-                    placeholder='Артикул'
-                />
-                <input
-                    value={details?.volume}
-                    onChange={(e) => setDetails({ ...details, volume: e.target.value })}
-                    className='Productinput'
-                    placeholder='Объем'
-                />
-            </div>
-            <div className='firstBlock'>
-                <input
-                    className='Productinput'
-                    type='number'
-                    placeholder='Цена без скидки'
-                    value={details?.price}
-                    onChange={(e) => setDetails({ ...details, price: e.target.value })}
-                />
-
-                <input
-                    className='Productinput'
-                    placeholder='Цена со скидкой'
-                    type='number'
-                    value={details?.discount}
-                    onChange={(e) => setDetails({ ...details, discount: e.target.value })}
-                />
-                <input
-                    className='Productinput'
-                    placeholder='Количество'
-                    value={details?.count}
-                    onChange={(e) => setDetails({ ...details, count: e.target.value })}
-                />
-            </div>
-            <div className='firstBlock'>
-                <FormControl style={{ width: "320px" }}>
-                    <InputLabel id="demo-simple-select-label">Категория</InputLabel>
-                    <Select label="Категория" value={details.category} onChange={(e) => SelectCategoy(e)}  >
-                        {getCategory?.data?.data?.map((elm, i) => {
-                            return <MenuItem key={i} value={elm}>{elm.name}</MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
-                <div >
-                    <FormControl variant="filled" className='FormControl' sx={{ width: '320px', borderRadius: 100 }}>
-                        <InputLabel>Группы</InputLabel>
-                        <Select
-                            multiple
-                            value={selectedSelection}
-                            onChange={handleSelectionChange}
-                            input={<OutlinedInput label="Группы" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        // ITEM_HEIGHT = 48
-                                        // ITEM_PADDING_TOP = 8
-                                        maxHeight: 48 * 4.5 + 8,
-                                        width: 250,
-                                    },
-                                }
-                            }
-                            }
-                        >
-                            {getCollections.data.data?.map((name) => {
-                                return <MenuItem key={name} value={name.name}>
-                                    <Checkbox checked={selectedSelection.indexOf(name.name) > -1} />
-                                    <ListItemText primary={name.name} />
-                                </MenuItem>
-                            })}
-                        </Select>
-                    </FormControl>
-
+                <div className='LableDiv'>
+                    <label>Наименование</label>
+                    <input
+                        className='Productinput'
+                        onChange={(e) => setDetails({ ...details, name: e.target.value })}
+                        placeholder='Наименование'
+                        value={details?.name}
+                        style={{ width: '450px' }}
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Артикул</label>
+                    <input
+                        className='Productinput'
+                        onChange={(e) => setDetails({ ...details, code: e.target.value })}
+                        value={details?.code}
+                        placeholder='Артикул'
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Объем</label>
+                    <input
+                        value={details?.volume}
+                        onChange={(e) => setDetails({ ...details, volume: e.target.value })}
+                        className='Productinput'
+                        placeholder='Объем'
+                    />
                 </div>
             </div>
             <div className='firstBlock'>
-                <FormControl style={{ width: "320px" }}>
-                    <InputLabel id="demo-simple-select-label">Возрастная группа</InputLabel>
-                    <Select label="Возрастная группа" value={details?.forWho} onChange={(e) => setDetails({ ...details, forWho: e.target.value })}   >
-                        {getForAge?.data?.data?.map((elm, i) => {
-                            return <MenuItem value={elm.id}>{elm.name}</MenuItem>
-                        })
-                        }
-                    </Select>
-                </FormControl>
+                <div className='LableDiv'>
+                    <label>Цена без скидки</label>
+                    <input
+                        className='Productinput'
+                        type='number'
+                        placeholder='Цена без скидки'
+                        value={details?.price}
+                        onChange={(e) => setDetails({ ...details, price: e.target.value })}
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Цена со скидкой</label>
+                    <input
+                        className='Productinput'
+                        placeholder='Цена со скидкой'
+                        type='number'
+                        value={details?.discount}
+                        onChange={(e) => setDetails({ ...details, discount: e.target.value })}
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Количество</label>
+                    <input
+                        className='Productinput'
+                        placeholder='Количество'
+                        value={details?.count}
+                        onChange={(e) => setDetails({ ...details, count: e.target.value })}
+                    />
+                </div>
             </div>
             <div className='firstBlock'>
-                <textarea
-                    className='ProductTextArea'
-                    placeholder='описание'
-                    value={details?.description}
-                    // style={{ height: '200px' }}
-                    onChange={(e) => setDetails({ ...details, description: e.target.value })}
-                />
+                <div className='LableDiv'>
+                    <label></label>
+                    <FormControl style={{ width: "320px" }}>
+                        <InputLabel id="demo-simple-select-label">Категория</InputLabel>
+                        <Select label="Категория" value={details.category} onChange={(e) => SelectCategoy(e)}  >
+                            {getCategory?.data?.data?.map((elm, i) => {
+                                return <MenuItem key={i} value={elm}>{elm.name}</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
+                </div>
+                <div >
+                    <div className='LableDiv'>
+                        <label></label>
+                        <FormControl variant="filled" className='FormControl' sx={{ width: '320px', borderRadius: 100 }}>
+                            <InputLabel>Группы</InputLabel>
+                            <Select
+                                multiple
+                                value={selectedSelection}
+                                onChange={handleSelectionChange}
+                                input={<OutlinedInput label="Группы" />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={{
+                                    PaperProps: {
+                                        style: {
+                                            // ITEM_HEIGHT = 48
+                                            // ITEM_PADDING_TOP = 8
+                                            maxHeight: 48 * 4.5 + 8,
+                                            width: 250,
+                                        },
+                                    }
+                                }
+                                }
+                            >
+                                {getCollections.data.data?.map((name) => {
+                                    return <MenuItem key={name} value={name.name}>
+                                        <Checkbox checked={selectedSelection.indexOf(name.name) > -1} />
+                                        <ListItemText primary={name.name} />
+                                    </MenuItem>
+                                })}
+                            </Select>
+                        </FormControl>
+                    </div>
+                </div>
+                <div className='LableDiv'>
+                    <label></label>
+                    <FormControl style={{ width: "320px" }}>
+                        <InputLabel id="demo-simple-select-label">Тип кожа</InputLabel>
+                        <Select label="Категория" value={details.skinType} onChange={(e) => SelectType(e)}  >
+                            {getPeau?.data?.map((elm, i) => {
+                                return <MenuItem key={i} value={elm}>{elm.name}</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
+                </div>
             </div>
             <div className='firstBlock'>
-                <textarea
-                    className='ProductTextArea'
-                    placeholder='Применение'
-                    value={details?.characteristics}
-                    onChange={(e) => setDetails({ ...details, characteristics: e.target.value })}
-                />
+                <div className='LableDiv'>
+                    <label></label>
+                    <FormControl style={{ width: "320px" }}>
+                        <InputLabel id="demo-simple-select-label">Возрастная группа</InputLabel>
+                        <Select label="Возрастная группа" value={details?.forWho} onChange={(e) => setDetails({ ...details, forWho: e.target.value })}   >
+                            {getForAge?.data?.data?.map((elm, i) => {
+                                return <MenuItem value={elm.id}>{elm.name}</MenuItem>
+                            })
+                            }
+                        </Select>
+                    </FormControl>
+                </div>
             </div>
             <div className='firstBlock'>
-                <textarea
-                    className='ProductTextArea'
-                    placeholder='Состав'
-                    value={details?.composition}
-                    onChange={(e) => setDetails({ ...details, composition: e.target.value })}
-                />
+                <div className='LableDiv'>
+                    <label>описание</label>
+                    <textarea
+                        className='ProductTextArea'
+                        placeholder='описание'
+                        value={details?.description}
+                        // style={{ height: '200px' }}
+                        onChange={(e) => setDetails({ ...details, description: e.target.value })}
+                    />
+                </div>
+            </div>
+            <div className='firstBlock'>
+                <div className='LableDiv'>
+                    <label>Применение</label>
+                    <textarea
+                        className='ProductTextArea'
+                        placeholder='Применение'
+                        value={details?.characteristics}
+                        onChange={(e) => setDetails({ ...details, characteristics: e.target.value })}
+                    />
+                </div>
+            </div>
+            <div className='firstBlock'>
+                <div className='LableDiv'>
+                    <label>Состав</label>
+                    <textarea
+                        className='ProductTextArea'
+                        placeholder='Состав'
+                        value={details?.composition}
+                        onChange={(e) => setDetails({ ...details, composition: e.target.value })}
+                    />
+                </div>
             </div>
             <div className='firstBlock'>
                 {photos?.length > 0 && photos.map((e, i) => {
@@ -627,7 +689,7 @@ export const UpdateProducts = () => {
                 </Button>
             </div>
             <div className='firstBlock'>
-                <button onClick={() => delateProduct({ product_id: id })} className='DelateProductButton'>УДАЛИТ</button>
+                <button onClick={() => delateProduct({ product_id: id })} className='DelateProductButton'>Удалить</button>
                 <button onClick={() => CreateProduct()} className='creatProductButton'>СОХРАНИТЬ</button>
             </div>
         </div>

@@ -220,3 +220,10 @@ export const SuccessGetPadborki = (data) => {
         data
     }
 }
+
+export const SuccessGetPeau = (data) => {
+    return {
+        type: 'SuccessGetPeau',
+        data
+    }
+}

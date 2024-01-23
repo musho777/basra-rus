@@ -6,7 +6,7 @@
 
 .header>p {
     color: #373737;
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif !important;
     font-size: 34px;
     font-style: normal;
     font-weight: 700;

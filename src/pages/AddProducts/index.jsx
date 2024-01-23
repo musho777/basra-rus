@@ -7,7 +7,7 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import { Button, Checkbox, ListItemText, OutlinedInput, TextField } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
-import { CreatProductAction, GetBrandAction, GetCategory, GetCollectionAction, GetForAge, GetGendersAction, GetPlatforms } from '../../Services/action/action'
+import { CreatProductAction, GetBrandAction, GetCategory, GetCollectionAction, GetForAge, GetGendersAction, GetPlatforms, GetTypePeau } from '../../Services/action/action'
 import Swal from 'sweetalert2'
 import { Plus } from '../../Svg'
 export const AddProducts = () => {
@@ -18,7 +18,7 @@ export const AddProducts = () => {
         count: '',
         volume: '',
         code: '',
-        // skinType: '',
+        skinType: '',
         gender: '',
         forWho: '',
         platform: '',
@@ -28,6 +28,7 @@ export const AddProducts = () => {
         category: '',
         subcategory: '',
         brand: '',
+        peau_id: ''
     })
     const [error, setError] = useState({
         name: '',
@@ -36,7 +37,7 @@ export const AddProducts = () => {
         count: '',
         volume: '',
         code: '',
-        // skinType: '',
+        skinType: '',
         gender: '',
         forWho: '',
         platform: '',
@@ -60,18 +61,19 @@ export const AddProducts = () => {
     const { getCollections } = useSelector((st) => st)
     const { getForAge } = useSelector((st) => st)
     const { createProduct } = useSelector((st) => st)
+    const { getPeau } = useSelector((st) => st)
+    console.log(getPeau.data, 'getPeau')
+
 
     const CreateProduct = () => {
         let item = []
         selectedSelection?.map((elm, i) => {
             getCollections?.data?.data.map((e, i) => {
-                console.log(e.name == elm)
                 if (e.name == elm) {
                     item.push(e.id)
                 }
             })
         })
-        console.log(item)
         let send = true
         let temp = { ...error }
         if (details.name == '') {
@@ -171,6 +173,14 @@ export const AddProducts = () => {
             temp.discount = ''
             send = true
         }
+        if (details.skinType === '') {
+            temp.skinType = 'giny partadir e '
+            send = false
+        }
+        else {
+            temp.skinType = ''
+            send = true
+        }
         if (!item?.length) {
             temp.podborki = 'giny partadir e '
             send = false
@@ -193,14 +203,14 @@ export const AddProducts = () => {
             send = true
         }
 
-        console.log(send, 'send')
+
         setError(temp)
-        console.log(temp)
         Object.values(temp).map((elm, i) => {
             if (elm != '') {
                 send = false
             }
         })
+
         if (send) {
             dispatch(CreatProductAction({
                 name: details.name,
@@ -216,13 +226,18 @@ export const AddProducts = () => {
                 characteristics: details.characteristics,
                 compound: details.composition,
                 podborki: item,
-                photos: photo
+                photos: photo,
+                peau_id: details?.skinType?.id
             }))
         }
     }
 
     const SelectCategoy = (e) => {
         setDetails({ ...details, category: e.target.value })
+    }
+
+    const SelectType = (e) => {
+        setDetails({ ...details, skinType: e.target.value })
     }
 
     useEffect(() => {
@@ -307,6 +322,13 @@ export const AddProducts = () => {
                 'error'
             )
         }
+        else if (error.skinType) {
+            Swal.fire(
+                'tip koja обязательна!',
+                '',
+                'error'
+            )
+        }
         else if (error.volume) {
             Swal.fire(
                 'Объем обязательна!',
@@ -372,7 +394,6 @@ export const AddProducts = () => {
         }
     }, [error])
     useEffect(() => {
-        console.log(createProduct.error != '', 'createProduct.error')
         if (createProduct.status) {
             window.location = '/Product'
         }
@@ -385,7 +406,9 @@ export const AddProducts = () => {
         }
     }, [createProduct])
 
-
+    useEffect(() => {
+        dispatch(GetTypePeau())
+    }, [])
 
     return <div>
         <div className='header'>
@@ -393,126 +416,175 @@ export const AddProducts = () => {
         </div>
         <div className='AddProductBlock1'>
             <div className='firstBlock'>
-                <input
-                    className='Productinput'
-                    onChange={(e) => setDetails({ ...details, name: e.target.value })}
-                    placeholder='Наименование'
-                    value={details?.name}
-                    style={{ width: '450px' }}
-                />
-                <input
-                    className='Productinput'
-                    onChange={(e) => setDetails({ ...details, code: e.target.value })}
-                    value={details?.code}
-                    placeholder='Артикул'
-                />
-                <input
-                    value={details?.volume}
-                    onChange={(e) => setDetails({ ...details, volume: e.target.value })}
-                    className='Productinput'
-                    placeholder='Объем'
-                />
-            </div>
-            <div className='firstBlock'>
-                <input
-                    className='Productinput'
-                    type='number'
-                    placeholder='Цена без скидки'
-                    value={details?.price}
-                    onChange={(e) => setDetails({ ...details, price: e.target.value })}
-                />
-
-                <input
-                    className='Productinput'
-                    placeholder='Цена со скидкой'
-                    type='number'
-                    value={details?.discount}
-                    onChange={(e) => setDetails({ ...details, discount: e.target.value })}
-                />
-                <input
-                    className='Productinput'
-                    placeholder='Количество'
-                    type='number'
-                    value={details?.count}
-                    onChange={(e) => setDetails({ ...details, count: e.target.value })}
-                />
-            </div>
-            <div className='firstBlock'>
-                <FormControl style={{ width: "320px" }}>
-                    <InputLabel id="demo-simple-select-label">Категория</InputLabel>
-                    <Select label="Категория" value={details.category} onChange={(e) => SelectCategoy(e)}  >
-                        {getCategory?.data?.data?.map((elm, i) => {
-                            return <MenuItem key={i} value={elm}>{elm.name}</MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
-                <div >
-                    <FormControl variant="filled" className='FormControl' sx={{ width: '320px', borderRadius: 100 }}>
-                        <InputLabel>Группы</InputLabel>
-                        <Select
-                            multiple
-                            value={selectedSelection}
-                            onChange={handleSelectionChange}
-                            input={<OutlinedInput label="Группы" />}
-                            renderValue={(selected) => selected.join(', ')}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        // ITEM_HEIGHT = 48
-                                        // ITEM_PADDING_TOP = 8
-                                        maxHeight: 48 * 4.5 + 8,
-                                        width: 250,
-                                    },
-                                }
-                            }
-                            }
-                        >
-                            {getCollections.data.data?.map((name) => {
-                                return <MenuItem key={name} value={name.name}>
-                                    <Checkbox checked={selectedSelection.indexOf(name.name) > -1} />
-                                    <ListItemText primary={name.name} />
-                                </MenuItem>
-                            })}
-                        </Select>
-                    </FormControl>
-
+                <div className='LableDiv'>
+                    <label>Наименование</label>
+                    <input
+                        className='Productinput'
+                        onChange={(e) => setDetails({ ...details, name: e.target.value })}
+                        placeholder='Наименование'
+                        value={details?.name}
+                        style={{ width: '450px' }}
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Артикул</label>
+                    <input
+                        className='Productinput'
+                        onChange={(e) => setDetails({ ...details, code: e.target.value })}
+                        value={details?.code}
+                        placeholder='Артикул'
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Объем</label>
+                    <input
+                        value={details?.volume}
+                        onChange={(e) => setDetails({ ...details, volume: e.target.value })}
+                        className='Productinput'
+                        placeholder='Объем'
+                    />
                 </div>
             </div>
             <div className='firstBlock'>
-                <FormControl style={{ width: "320px" }}>
-                    <InputLabel id="demo-simple-select-label">Возрастная группа</InputLabel>
-                    <Select label="Возрастная группа" value={details?.forWho} onChange={(e) => setDetails({ ...details, forWho: e.target.value })}   >
-                        {getForAge?.data?.data?.map((elm, i) => {
-                            return <MenuItem value={elm.id}>{elm.name}</MenuItem>
-                        })
-                        }
-                    </Select>
-                </FormControl>
+                <div className='LableDiv'>
+                    <label>Цена без скидки</label>
+                    <input
+                        className='Productinput'
+                        type='number'
+                        placeholder='Цена без скидки'
+                        value={details?.price}
+                        onChange={(e) => setDetails({ ...details, price: e.target.value })}
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Цена со скидкой</label>
+                    <input
+                        className='Productinput'
+                        placeholder='Цена со скидкой'
+                        type='number'
+                        value={details?.discount}
+                        onChange={(e) => setDetails({ ...details, discount: e.target.value })}
+                    />
+                </div>
+                <div className='LableDiv'>
+                    <label>Количество</label>
+                    <input
+                        className='Productinput'
+                        placeholder='Количество'
+                        type='number'
+                        value={details?.count}
+                        onChange={(e) => setDetails({ ...details, count: e.target.value })}
+                    />
+                </div>
             </div>
             <div className='firstBlock'>
-                <textarea
-                    className='ProductTextArea'
-                    placeholder='описание'
-                    value={details?.description}
-                    // style={{ height: '200px' }}
-                    onChange={(e) => setDetails({ ...details, description: e.target.value })}
-                />
+                <div className='LableDiv'>
+                    <label></label>
+                    <FormControl style={{ width: "320px" }}>
+                        <InputLabel id="demo-simple-select-label">Категория</InputLabel>
+                        <Select label="Категория" value={details.category} onChange={(e) => SelectCategoy(e)}  >
+                            {getCategory?.data?.data?.map((elm, i) => {
+                                return <MenuItem key={i} value={elm}>{elm.name}</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
+                </div>
+
+                <div >
+                    <div className='LableDiv'>
+                        <label></label>
+                        <FormControl variant="filled" className='FormControl' sx={{ width: '320px', borderRadius: 100 }}>
+                            <InputLabel>Группы</InputLabel>
+                            <Select
+                                multiple
+                                value={selectedSelection}
+                                onChange={handleSelectionChange}
+                                input={<OutlinedInput label="Группы" />}
+                                renderValue={(selected) => selected.join(', ')}
+                                MenuProps={{
+                                    PaperProps: {
+                                        style: {
+                                            // ITEM_HEIGHT = 48
+                                            // ITEM_PADDING_TOP = 8
+                                            maxHeight: 48 * 4.5 + 8,
+                                            width: 250,
+                                        },
+                                    }
+                                }
+                                }
+                            >
+                                {getCollections.data.data?.map((name) => {
+                                    return <MenuItem key={name} value={name.name}>
+                                        <Checkbox checked={selectedSelection.indexOf(name.name) > -1} />
+                                        <ListItemText primary={name.name} />
+                                    </MenuItem>
+                                })}
+                            </Select>
+                        </FormControl>
+                    </div>
+
+                </div>
+                <div className='LableDiv'>
+                    <label></label>
+                    <FormControl style={{ width: "320px" }}>
+                        <InputLabel id="demo-simple-select-label">Тип кожа</InputLabel>
+                        <Select label="Категория" value={details.skinType} onChange={(e) => SelectType(e)}  >
+                            {getPeau.data.length > 0 && getPeau?.data?.map((elm, i) => {
+                                return <MenuItem key={i} value={elm}>{elm.name}</MenuItem>
+                            })}
+                        </Select>
+                    </FormControl>
+                </div>
+            </div>
+
+
+            <div className='firstBlock'>
+                <div className='LableDiv'>
+                    <label></label>
+                    <FormControl style={{ width: "320px" }}>
+                        <InputLabel id="demo-simple-select-label">Возрастная группа</InputLabel>
+                        <Select label="Возрастная группа" value={details?.forWho} onChange={(e) => setDetails({ ...details, forWho: e.target.value })}   >
+                            {getForAge?.data?.data?.map((elm, i) => {
+                                return <MenuItem value={elm.id}>{elm.name}</MenuItem>
+                            })
+                            }
+                        </Select>
+                    </FormControl>
+                </div>
             </div>
             <div className='firstBlock'>
-                <textarea
-                    className='ProductTextArea'
-                    placeholder='Применение'
-                    value={details?.characteristics}
-                    onChange={(e) => setDetails({ ...details, characteristics: e.target.value })}
-                />
+                <div className='LableDiv'>
+                    <label>описание</label>
+                    <textarea
+                        className='ProductTextArea'
+                        placeholder='описание'
+                        value={details?.description}
+                        // style={{ height: '200px' }}
+                        onChange={(e) => setDetails({ ...details, description: e.target.value })}
+                    />
+                </div>
             </div>
             <div className='firstBlock'>
-                <textarea
-                    className='ProductTextArea'
-                    placeholder='Состав'
-                    value={details?.composition}
-                    onChange={(e) => setDetails({ ...details, composition: e.target.value })}
-                />
+                <div className='LableDiv'>
+                    <label>Применение</label>
+                    <textarea
+                        className='ProductTextArea'
+                        placeholder='Применение'
+                        value={details?.characteristics}
+                        onChange={(e) => setDetails({ ...details, characteristics: e.target.value })}
+                    />
+                </div>
+            </div>
+            <div className='firstBlock'>
+                <div className='LableDiv'>
+                    <label>Состав</label>
+                    <textarea
+                        className='ProductTextArea'
+                        placeholder='Состав'
+                        value={details?.composition}
+                        onChange={(e) => setDetails({ ...details, composition: e.target.value })}
+                    />
+                </div>
             </div>
             <div className='firstBlock'>
                 {photos.length > 0 && photos.map((e, i) => (

@@ -6,11 +6,12 @@
 
 .header>p {
     color: #373737;
-    font-family: Montserrat;
     font-size: 34px;
     font-style: normal;
     font-weight: 700;
     line-height: 110%;
+    font-family: 'Montserrat', sans-serif !important;
+
 }
 
 .buttonWrapper {
@@ -18,6 +19,28 @@
     gap: 20px;
 }
 
+.rdrDefinedRangesWrapper {
+    display: none;
+}
+
+.mFilterWrapper {
+    display: none !important;
+}
+
 .TableWrapper {
     margin: 40px 0;
+}
+
+.rdrDateDisplayWrapper {
+    display: none !important;
+}
+
+.CalendarWrapper {
+    width: 300px;
+}
+
+.DataPickerDiv {
+    position: absolute;
+    z-index: 999;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }

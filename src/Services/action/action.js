@@ -1,14 +1,14 @@
 import {
     ErrorGetCategory, ErrorGetOrder, ErrorGetProduct, ErrorGetUser, ErrorLogin, ErrprGetSinglUser,
-    ErrorCreatProduct, ErrorCreatStoryTeam, ErrorDeletCategory, ErrorEditOrder, ErrorGetAllUSer, ErrorGetBreand, ErrorGetCollections, ErrorGetForAge, ErrorGetGenders, ErrorGetMyOrder, ErrorGetPlatforms, ErrorGetReducer, ErrorGetSinglOrder, ErrorGetSinglProfil, ErrorGetSinglStory, ErrorGetSlider, ErrorGetStoryTeam, ErrorSinglPageAction, ErrorUpdateProduct, ErrorGetComments, ErrorGetSinglProduct, ErrorGetPadborki
+    ErrorCreatProduct, ErrorCreatStoryTeam, ErrorDeletCategory, ErrorEditOrder, ErrorGetAllUSer, ErrorGetBreand, ErrorGetCollections, ErrorGetForAge, ErrorGetGenders, ErrorGetMyOrder, ErrorGetPlatforms, ErrorGetReducer, ErrorGetSinglOrder, ErrorGetSinglProfil, ErrorGetSinglStory, ErrorGetSlider, ErrorGetStoryTeam, ErrorSinglPageAction, ErrorUpdateProduct, ErrorGetComments, ErrorGetSinglProduct, ErrorGetPadborki, ErrorGertPeau
 } from "./errorAction";
 import {
     StartGetCategory, StartGetOrders, StartGetProduct, StartGetSinglUser, StartGetUser, StartLogin,
-    StartCreatPorduct, StartCreataStoryTeam, StartDeletCategory, StartDeletStoryTeam, StartEditOrder, StartGetALLUser, StartGetBreands, StartGetCollections, StartGetForAge, StartGetGenders, StartGetMyOrder, StartGetPlatofrms, StartGetProducts, StartGetSinglOrder, StartGetSinglPageAction, StartGetSinglProfil, StartGetSinglStory, StartGetSlider, StartGetStoryTeam, StartUpdateProduct, StartGetComments, StartGetSinglProduct, StartGetPadborki
+    StartCreatPorduct, StartCreataStoryTeam, StartDeletCategory, StartDeletStoryTeam, StartEditOrder, StartGetALLUser, StartGetBreands, StartGetCollections, StartGetForAge, StartGetGenders, StartGetMyOrder, StartGetPlatofrms, StartGetProducts, StartGetSinglOrder, StartGetSinglPageAction, StartGetSinglProfil, StartGetSinglStory, StartGetSlider, StartGetStoryTeam, StartUpdateProduct, StartGetComments, StartGetSinglProduct, StartGetPadborki, StartGetPeau
 } from "./startAction";
 import {
     SuccessGetCategory, SuccessGetOrders, SuccessGetProduct, SuccessGetUser,
-    SuccessCreatProduct, SuccessCreateStoryTeam, SuccessDelectCategory, SuccessGetBreand, SuccessGetChatRedcuer, SuccessGetCollections, SuccessGetForAge, SuccessGetGenders, SuccessGetMyOrder, SuccessGetPlatforms, SuccessGetProducts, SuccessGetSinglOrder, SuccessGetSinglProfil, SuccessGetSinglStory, SuccessGetSinglUser, SuccessGetSlider, SuccessGetStoryTeam, SuccessLastSlider, SuccessLogin, SuccessSinglPageChat, SuccessUpdateProduct, SucessGetAllUser, SuccessGetComments, SuccessGetComments1, SuccessGetSinglProduct, SuccessGetPadborki
+    SuccessCreatProduct, SuccessCreateStoryTeam, SuccessDelectCategory, SuccessGetBreand, SuccessGetChatRedcuer, SuccessGetCollections, SuccessGetForAge, SuccessGetGenders, SuccessGetMyOrder, SuccessGetPlatforms, SuccessGetProducts, SuccessGetSinglOrder, SuccessGetSinglProfil, SuccessGetSinglStory, SuccessGetSinglUser, SuccessGetSlider, SuccessGetStoryTeam, SuccessLastSlider, SuccessLogin, SuccessSinglPageChat, SuccessUpdateProduct, SucessGetAllUser, SuccessGetComments, SuccessGetComments1, SuccessGetSinglProduct, SuccessGetPadborki, SuccessGetPeau
 
 } from "./successAction";
 
@@ -495,7 +495,7 @@ export const CreatProductAction = (data) => {
     formdata.append("description", data.description);
     formdata.append("characteristics", data.characteristics);
     formdata.append("compound", data.compound);
-
+    formdata.append("peau_id", data.peau_id);
     for (const image of data.photos) {
         formdata.append("photos[]", image);
     }
@@ -602,6 +602,8 @@ export const UpdateProduct = (data) => {
     formdata.append("characteristics", data.characteristics);
     formdata.append("compound", data.compound);
     formdata.append("product_id", data.product_id)
+    formdata.append("peau_id", data.peau_id)
+
     for (const image of data.photos) {
         formdata.append("photos[]", image);
     }
@@ -1199,7 +1201,9 @@ export const GetSinglPorduct = (data) => {
         fetch(`${api}/single_page_order`, requestOptions)
             .then((r) => r.json())
             .then(r => {
+
                 if (r.status) {
+                    console.log(r.data, 'ds')
                     dispatch(SuccessGetSinglProduct(r.data))
                 }
                 else {
@@ -1253,6 +1257,34 @@ export const GetPorductWhitePadborki = () => {
             })
             .catch((error) => {
                 dispatch(ErrorGetPadborki())
+            });
+    }
+}
+
+export const GetTypePeau = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Authorization', `Bearer ${token}`);
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+    };
+    return (dispatch) => {
+        dispatch(StartGetPeau())
+        fetch(`${api}/get_TypePeau`, requestOptions)
+            .then((r) => r.json())
+            .then(r => {
+                console.log('ss')
+                if (r.status) {
+                    dispatch(SuccessGetPeau(r.data))
+                }
+                else {
+                    dispatch(ErrorGertPeau())
+                }
+            })
+            .catch((error) => {
+                dispatch(ErrorGertPeau())
             });
     }
 }

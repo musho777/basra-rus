@@ -26,8 +26,8 @@ export const ReviewsPage = () => {
         <div className='header'>
             <p>Отзывы</p>
             <div className='ReviewsPageButtonWrapper'>
-                <Button green={status == 0} onClick={() => setStatus(0)} text={'Публиков'} />
-                <Button green={status == 1} onClick={() => setStatus(1)} text={'Не Публиков'} />
+                <Button green={status == 1} onClick={() => setStatus(1)} text={'Не опубликованные'} />
+                <Button green={status == 0} onClick={() => setStatus(0)} text={'Опубликованные'} />
             </div>
         </div>
         <div className='ReviewWrapper'>
@@ -38,6 +38,7 @@ export const ReviewsPage = () => {
                     status={elm.status}
                     star={elm.star}
                     d={elm.created_at}
+                    type={status}
                     name={elm?.user?.name}
                     product={elm.product}
                     message={elm.message}

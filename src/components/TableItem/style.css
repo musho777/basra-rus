@@ -20,14 +20,16 @@
 }
 
 .TableItemImg {
-    width: 45px;
+    width: 92px;
     height: 92px;
+    object-fit: contain;
 }
 
 .Tablelabel {
     color: #878787;
 
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif !important;
+
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -36,7 +38,8 @@
 
 .TablelItem {
     color: #373737;
-    font-family: Montserrat;
+    font-family: 'Montserrat', sans-serif !important;
+
     font-size: 16px;
     font-style: normal;
     font-weight: 500;

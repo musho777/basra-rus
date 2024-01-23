@@ -1,11 +1,13 @@
 import './style.css'
 export const Item = ({ last, data, product }) => {
+    console.log(data)
     return <div className="UserProductItem" id={last ? 'last' : ''}>
         <div className='ImgWrapperUserProduct'>
             <img className='UserProductImg' src={require('../../Assets/img/22.png')} />
             <div className='UserProductText'>
-                <p className='Artikle'>Артикул: {data?.vendor_code}</p>
+                {/* <p className='Artikle'>{data?.name}</p> */}
                 <p className='Krem'>{data?.name}</p>
+                <p className='Artikle'>Артикул: {data?.vendor_code}</p>
                 <p className='volume'>Объем: {data?.volume} мл</p>
             </div>
         </div>

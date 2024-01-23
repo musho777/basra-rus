@@ -183,3 +183,9 @@ export const StartGetPadborki = () => {
         type: 'StartGetPadborki'
     }
 }
+
+export const StartGetPeau = () => {
+    return {
+        type: 'StartGetPeau'
+    }
+}

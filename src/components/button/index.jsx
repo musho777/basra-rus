@@ -1,7 +1,7 @@
 import { ClockLoader } from 'react-spinners'
 import './style.css'
 export const Button = ({ text, loading, active, green, onClick = () => { }, black }) => {
-    return <div onClick={() => onClick()} id={active ? 'aciveButton' : ''} className={
+    return <div onClick={(e) => onClick(e)} id={active ? 'aciveButton' : ''} className={
         green ? 'greenButton' : black ? 'blackButton' : 'button'
 
     }>

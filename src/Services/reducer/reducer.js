@@ -25,6 +25,7 @@ import { GetAllUSerReducer } from './GetAllUSerReducer'
 import { GetCommentsReducer } from "./GetCommentsReducer";
 import { GetSinglProductPage } from "./GetSinglProductPage";
 import { GetProductPadborki } from "./GetProductPadborki";
+import { GetPeauReducer } from "./GetPeauReducer";
 
 export default combineReducers({
     Auth_reducer,
@@ -54,5 +55,6 @@ export default combineReducers({
     getSinglUSer: GetSinglUserReducer,
     GetCommentsReducer: GetCommentsReducer,
     GetSinglProductPage: GetSinglProductPage,
-    GetProductPadborki: GetProductPadborki
+    GetProductPadborki: GetProductPadborki,
+    getPeau: GetPeauReducer
 })
